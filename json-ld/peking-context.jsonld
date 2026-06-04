@@ -1,0 +1,56 @@
+{
+  "@context": {
+    "schema": "https://schema.org/",
+    "vocab": "https://opendata.pku.edu.cn/vocab#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "name": "schema:name",
+    "url": "schema:url",
+    "description": "schema:description",
+    "alternateName": "schema:alternateName",
+    "foundingDate": "schema:foundingDate",
+    "location": "schema:location",
+    "sameAs": "schema:sameAs",
+    "department": {
+      "@id": "schema:department",
+      "@type": "@id"
+    },
+    "dataset": {
+      "@id": "schema:dataset",
+      "@type": "@id"
+    },
+    "Dataverse": "vocab:Dataverse",
+    "Dataset": {
+      "@id": "schema:Dataset"
+    },
+    "DataFile": "vocab:DataFile",
+    "identifier": "schema:identifier",
+    "doi": {
+      "@id": "schema:identifier",
+      "@type": "schema:PropertyValue"
+    },
+    "title": "dcterms:title",
+    "creator": "dcterms:creator",
+    "publisher": "dcterms:publisher",
+    "subject": "dcterms:subject",
+    "datePublished": "schema:datePublished",
+    "distribution": "schema:distribution",
+    "contentUrl": "schema:contentUrl"
+  },
+  "@type": "schema:CollegeOrUniversity",
+  "@id": "https://english.pku.edu.cn/",
+  "name": "Peking University",
+  "alternateName": "PKU",
+  "url": "https://english.pku.edu.cn/",
+  "description": "Peking University (PKU) is a major public research university in Beijing, China. Its public, machine-readable API footprint centers on the PKU Open Research Data Platform, a Dataverse-based research data repository operated by the PKU Library.",
+  "sameAs": [
+    "https://github.com/PKUHPC",
+    "https://www.linkedin.com/school/peking-university/",
+    "https://opendata.pku.edu.cn/"
+  ],
+  "department": {
+    "@type": "schema:DataCatalog",
+    "name": "PKU Open Research Data Platform",
+    "url": "https://opendata.pku.edu.cn/",
+    "description": "Dataverse-based open research data repository exposing the native Dataverse REST API and an OAI-PMH 2.0 metadata-harvesting endpoint."
+  }
+}
