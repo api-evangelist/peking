@@ -1,0 +1,84 @@
+---
+aid: peking
+name: Peking University
+description: >-
+  Peking University (PKU) is a major public research university in Beijing,
+  China, ranked #25 in the QS World University Rankings 2025. Its most clearly
+  documented public, machine-readable API footprint is the Peking University
+  Open Research Data Platform, a Dataverse-based research data repository
+  operated by the PKU Library that exposes both the native Dataverse REST API
+  and a live OAI-PMH 2.0 metadata-harvesting endpoint. Campus identity is handled
+  by the PKU IAAA unified authentication system (a CAS/SSO service), which is
+  gated and not a public developer API. No general-purpose institutional
+  developer portal was found at the time of review.
+type: Index
+position: Consumer
+access: 3rd-Party
+image: https://kinlane-productions.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+url: https://raw.githubusercontent.com/api-evangelist/peking/refs/heads/main/apis.yml
+tags:
+  - Education
+  - Higher Education
+  - University
+  - Research Data
+  - Open Data
+  - China
+created: '2026-06-03'
+modified: '2026-06-03'
+specificationVersion: '0.19'
+apis:
+  - aid: peking:opendata-rest
+    name: PKU Open Research Data Platform (Dataverse REST API)
+    description: >-
+      The Peking University Open Research Data Platform is built on Dataverse
+      and exposes the standard Dataverse native REST API for searching,
+      retrieving, and managing dataverses, datasets, and files. The platform
+      hosts research data across social sciences, health, bioinformatics, and
+      NLP. API behavior follows the upstream Dataverse API guides.
+    humanURL: https://opendata.pku.edu.cn/
+    baseURL: https://opendata.pku.edu.cn/api
+    tags: [ Research Data, Open Data, Dataverse, REST, Repository ]
+    properties:
+      - type: Documentation
+        url: https://guides.dataverse.org/en/latest/api/
+      - type: Website
+        url: https://opendata.pku.edu.cn/
+  - aid: peking:opendata-oaipmh
+    name: PKU Open Research Data Platform (OAI-PMH)
+    description: >-
+      Live OAI-PMH 2.0 metadata-harvesting endpoint for the Peking University
+      Open Research Data Platform Dataverse archive. Verified to respond to the
+      Identify verb, supporting metadata standards including Dublin Core and
+      DataCite, with YYYY-MM-DDThh:mm:ssZ granularity. Implemented via the XOAI
+      OAI-PMH Java toolkit.
+    humanURL: https://opendata.pku.edu.cn/
+    baseURL: https://opendata.pku.edu.cn/oai
+    tags: [ OAI-PMH, Metadata, Harvesting, Research Data, Repository ]
+    properties:
+      - type: Documentation
+        url: https://guides.dataverse.org/en/latest/api/oai.html
+      - type: Website
+        url: https://opendata.pku.edu.cn/
+common:
+  - type: Website
+    url: https://english.pku.edu.cn/
+  - type: GitHub
+    url: https://github.com/PKUHPC
+  - type: LinkedIn
+    url: https://www.linkedin.com/school/peking-university/
+  - type: Authentication
+    url: https://iaaa.pku.edu.cn/
+  - type: SourceCode
+    url: https://github.com/pengchengluo/Peking-University-Open-Research-Data-Platform
+  - type: Plans
+    url: plans/peking-plans-pricing.yml
+  - type: RateLimits
+    url: rate-limits/peking-rate-limits.yml
+  - type: FinOps
+    url: finops/peking-finops.yml
+  - type: Review
+    url: review.yml
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
+---

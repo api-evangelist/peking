@@ -1,0 +1,36 @@
+---
+name: Peking University
+description: Peking University public developer/API footprint review for APIs.json cataloging.
+url: https://raw.githubusercontent.com/api-evangelist/peking/refs/heads/main/review.yml
+created: '2026-06-03'
+modified: '2026-06-03'
+reviews:
+  - date: '2026-06-03'
+    rating: 2
+    summary: >-
+      Peking University has no general institutional developer portal. The
+      clearest public, machine-readable API is the Dataverse-based Open Research
+      Data Platform (opendata.pku.edu.cn), which exposes a native REST API and a
+      live OAI-PMH 2.0 endpoint. The OAI-PMH Identify verb was verified live
+      (200). The Dataverse REST /api/info/version path returned 403 to the
+      review fetcher (likely user-agent/WAF filtering) rather than confirming
+      absence; the API surface is documented upstream by the Dataverse project.
+      IAAA is a gated CAS/SSO unified-auth system, not a public API. No
+      endpoints were fabricated; only URLs probed live are recorded below.
+    endpoints:
+      - url: https://opendata.pku.edu.cn/oai?verb=Identify
+        status: 200
+        note: Live OAI-PMH 2.0 Identify response; XOAI toolkit, Dublin Core/DataCite.
+      - url: https://opendata.pku.edu.cn/
+        status: 200
+        note: Open Research Data Platform homepage; Dataverse, 183 dataverses / 485 datasets.
+      - url: https://opendata.pku.edu.cn/api/info/version
+        status: 403
+        note: Dataverse native REST API path; 403 to fetcher, not confirmed absent.
+      - url: https://english.pku.edu.cn/
+        status: 200
+        note: Official PKU English website, verified authentic.
+      - url: https://iaaa.pku.edu.cn/
+        status: 200
+        note: IAAA unified authentication (CAS/SSO); gated, not a public developer API.
+---
