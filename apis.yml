@@ -60,6 +60,8 @@ apis:
       - type: Website
         url: https://opendata.pku.edu.cn/
 common:
+  - type: DomainSecurity
+    url: security/peking-domain-security.yml
   - type: Website
     url: https://english.pku.edu.cn/
   - type: GitHub
