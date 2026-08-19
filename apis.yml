@@ -37,7 +37,7 @@ tags:
   - China
 created: '2026-06-03'
 modified: '2026-06-03'
-specificationVersion: '0.19'
+specificationVersion: '0.23'
 apis:
   - aid: peking:opendata-rest
     name: PKU Open Research Data Platform (Dataverse REST API)
