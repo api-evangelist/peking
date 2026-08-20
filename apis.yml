@@ -249,7 +249,18 @@ apis:
       — the generated document's only server is http://localhost:5006/api — so no hosted
       base URL is claimed.
     humanURL: https://pkuhpc.github.io/OpenSCOW/
-    tags: [ Research Computing, HPC, gRPC, Protocol Buffers, Open Source ]
+    tags:
+    - Research Computing
+    - HPC
+    - gRPC
+    - Protocol Buffers
+    - Open-Source
+    tags_raw:
+    - Research Computing
+    - HPC
+    - gRPC
+    - Protocol Buffers
+    - Open Source
     properties:
       - type: GitHubRepository
         url: https://github.com/PKUHPC/OpenSCOW
