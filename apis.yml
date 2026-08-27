@@ -117,196 +117,269 @@ x-coverage:
     - url: https://www.pku.edu.cn/llms.txt
       status: 404
 apis:
-  - aid: peking:ir-rest
-    name: PKU Institutional Repository REST API
-    x-operator: institution
-    x-operator-evidence: >-
-      Host ir.pku.edu.cn is under Peking University's own registrable domain; the
-      repository's own OAI-PMH Identify names it "Institutional Repository of Peking
-      University" with adminEmail pkuir@lib.pku.edu.cn. The deployment runs DSpace
-      software but the payloads carry PKU-only extensions (claim, award4pku, taglist,
-      deptid, deptname) absent from stock DSpace — a locally operated and locally
-      modified instance, not a vendor tenancy.
-    description: >-
-      Unauthenticated read API over the university's scholarly record — communities that
-      mirror the faculty structure (理学部, 人文学部, 专利 with 25,721 items), their
-      collections, items, Dublin Core metadata, attached files, and Handle resolution
-      under the repository's own prefix 20.500.11897. Ten paths verified live on
-      2026-08-19; /rest/items/{id} returns HTTP 500 while the same item resolves through
-      /rest/handle.
-    humanURL: https://ir.pku.edu.cn/
-    baseURL: https://ir.pku.edu.cn/rest
-    tags: [ Research Repository, Scholarly, REST, DSpace, Open Access ]
-    properties:
-      - type: OpenAPI
-        url: openapi/peking-institutional-repository-rest-openapi.yml
-      - type: JSONSchema
-        url: json-schema/peking-ir-item.json
-      - type: Examples
-        url: examples/peking-ir-rest-items-response.json
-      - type: Website
-        url: https://ir.pku.edu.cn/
-  - aid: peking:ir-oai-pmh
-    name: PKU Institutional Repository OAI-PMH API
-    x-operator: institution
-    x-operator-evidence: >-
-      The endpoint's own Identify response reports baseURL http://ir.pku.edu.cn/oai/request
-      and adminEmail pkuir@lib.pku.edu.cn.
-    description: >-
-      OAI-PMH 2.0 metadata-harvesting endpoint for the institutional repository, live since
-      at least 2015-09-25 (its earliest datestamp). Advertises twelve metadata formats —
-      oai_dc, qdc, mods, mets, didl, ore, rdf, marc, xoai, dim, etdms, uketd_dc — and sets
-      per PKU faculty. Identify, ListMetadataFormats, ListSets and ListIdentifiers verified
-      live; an unrecognised verb returns HTTP 500 instead of the protocol's badVerb error.
-    humanURL: https://ir.pku.edu.cn/
-    baseURL: https://ir.pku.edu.cn/oai
-    tags: [ OAI-PMH, Metadata, Harvesting, Research Repository, Dublin Core ]
-    properties:
-      - type: OpenAPI
-        url: openapi/peking-institutional-repository-oai-pmh-openapi.yml
-      - type: Examples
-        url: examples/peking-ir-oai-identify-response.xml
-      - type: Documentation
-        url: https://www.openarchives.org/OAI/openarchivesprotocol.html
-      - type: Conformance
-        url: conformance/peking-conformance.yml
-  - aid: peking:ir-opensearch
-    name: PKU Institutional Repository OpenSearch Feed
-    x-operator: institution
-    description: >-
-      OpenSearch 1.1 query interface returning an Atom feed of repository records, served
-      from the institution's own host. Verified live 2026-08-19 (HTTP 200, 32KB Atom
-      response for query=test).
-    humanURL: https://ir.pku.edu.cn/
-    baseURL: https://ir.pku.edu.cn/open-search/
-    tags: [ OpenSearch, Atom, Discovery, Research Repository ]
-    properties:
-      - type: Website
-        url: https://ir.pku.edu.cn/open-search/?query=test
-  - aid: peking:idp-saml
-    name: Peking University Shibboleth Identity Provider (SAML 2.0 metadata)
-    x-operator: institution
-    x-operator-evidence: >-
-      entityID https://idp.pku.edu.cn/idp/shibboleth, shibmd:Scope pku.edu.cn, served from
-      the university's own host; independently listed in eduGAIN with registration
-      authority https://www.carsi.edu.cn since 2019-06-18.
-    description: >-
-      The university's federated identity provider, publishing live Shibboleth/SAML 2.0
-      metadata as machine-readable XML. Declares SAML 2.0 POST, POST-SimpleSign and
-      Redirect SSO/SLO bindings, the legacy Shibboleth SSO profile, an
-      AttributeAuthorityDescriptor, and SOAP ArtifactResolution / AttributeQuery / SLO
-      endpoints on port 8443. This is the surface class universities operate by definition
-      and almost never catalogue.
-    humanURL: https://idp.pku.edu.cn/idp/shibboleth
-    baseURL: https://idp.pku.edu.cn/idp
-    tags: [ Identity Federation, SAML, Shibboleth, eduGAIN, Authentication ]
-    properties:
-      - type: Authentication
-        url: authentication/peking-authentication.yml
-      - type: Examples
-        url: examples/peking-idp-saml-metadata.xml
-      - type: Website
-        url: https://idp.pku.edu.cn/idp/shibboleth
-  - aid: peking:carsi
-    name: CARSI — CERNET Authentication and Resource Sharing Infrastructure
-    x-operator: institution
-    x-operator-evidence: >-
-      Operated by the Peking University Computer Center: the carsi.edu.cn footer reads
-      版权所有©北京大学计算中心, and eduGAIN's federation registry lists CARSI with the
-      contact address carsi@pku.edu.cn, registration authority https://www.carsi.edu.cn,
-      membership from 2019-05-24 and production from 2019-06-18. The federation runs on
-      its own national domain rather than pku.edu.cn, but Peking University runs the
-      federation.
-    description: >-
-      China's national identity federation for higher education and research, operated by
-      Peking University and a full eduGAIN member. 1,042 SAML entities in eduGAIN carry
-      CARSI as their registration authority — identity providers at 500+ Chinese
-      universities and the service providers of international scholarly publishers — which
-      makes this the largest programmable surface Peking University runs and one it runs on
-      behalf of the whole sector. PKU also operates the national eduroam service at
-      eduroam.edu.cn, listed with CARSI as CERNET basic infrastructure since October 2017.
-    humanURL: https://www.carsi.edu.cn/
-    tags: [ Identity Federation, SAML, eduGAIN, National Infrastructure, Authentication ]
-    properties:
-      - type: Website
-        url: https://www.carsi.edu.cn/
-      - type: Authentication
-        url: authentication/peking-authentication.yml
-  - aid: peking:openscow
-    name: OpenSCOW / CraneSched research-computing APIs
-    x-operator: institution
-    x-operator-evidence: >-
-      Every source file is copyright "Peking University and Peking University Institute for
-      Computing and Digital Economy", released under Mulan PSL v2 from the PKU HPC group's
-      own GitHub organisation.
-    description: >-
-      OpenSCOW ("Super Computing On Web") is an HPC portal and management system authored
-      at Peking University; CraneSched is its distributed scheduler for HPC and AI
-      workloads. Their APIs are defined in roughly forty Protocol Buffer files across
-      portal, mis, audit, hook and scheduler services and consumed over gRPC, with an
-      OpenAPI document generated at build time for the SCOW AI service. This is a real
-      institution-authored API contract, but it describes software each site deploys itself
-      — the generated document's only server is http://localhost:5006/api — so no hosted
-      base URL is claimed.
-    humanURL: https://pkuhpc.github.io/OpenSCOW/
-    tags:
-    - Research Computing
-    - HPC
-    - gRPC
-    - Protocol Buffers
-    - Open-Source
-    tags_raw:
-    - Research Computing
-    - HPC
-    - gRPC
-    - Protocol Buffers
-    - Open Source
-    properties:
-      - type: GitHubRepository
-        url: https://github.com/PKUHPC/OpenSCOW
-      - type: Documentation
-        url: https://pkuhpc.github.io/OpenSCOW/
-      - type: SourceCode
-        url: https://github.com/PKUHPC/CraneSched
-  - aid: peking:opendata-rest
-    name: PKU Open Research Data Platform (Dataverse REST API)
-    x-operator: institution
-    x-operator-evidence: >-
-      Host opendata.pku.edu.cn is under Peking University's own registrable domain and TLS
-      terminates on PKU's own *.pku.edu.cn certificate. The deployment is a PKU-authored
-      customisation of Dataverse — bilingual interface, PKU-specific GroupProvider and
-      credentials authentication, a DataCite DOI registration module — published as source.
-    x-availability: unreachable
-    description: >-
-      Dataverse-based research data repository operated by the PKU Library across social
-      science, health, bioinformatics and NLP collections. Verified live by this catalog on
-      2026-06-03 (183 dataverses, 485 datasets). During the 2026-08-19 pass the host
-      completed TLS and answered a 301 on port 80 but never returned an HTTPS response,
-      across seven attempts; recorded as unreadable from our vantage point rather than
-      removed, since nothing observed proves the surface is gone.
-    humanURL: https://opendata.pku.edu.cn/
-    baseURL: https://opendata.pku.edu.cn/api
-    tags: [ Research Data, Open Data, Dataverse, REST, Repository ]
-    properties:
-      - type: Documentation
-        url: https://guides.dataverse.org/en/latest/api/
-      - type: SourceCode
-        url: https://github.com/pengchengluo/Peking-University-Open-Research-Data-Platform
-  - aid: peking:opendata-oaipmh
-    name: PKU Open Research Data Platform (OAI-PMH)
-    x-operator: institution
-    x-availability: unreachable
-    description: >-
-      OAI-PMH 2.0 metadata-harvesting endpoint for the Open Research Data Platform,
-      verified responding to the Identify verb on 2026-06-03 with Dublin Core and DataCite
-      support via the XOAI toolkit. Unreachable during the 2026-08-19 pass on the same
-      terms as the platform's REST API above.
-    humanURL: https://opendata.pku.edu.cn/
-    baseURL: https://opendata.pku.edu.cn/oai
-    tags: [ OAI-PMH, Metadata, Harvesting, Research Data, Repository ]
-    properties:
-      - type: Documentation
-        url: https://guides.dataverse.org/en/latest/api/oai.html
+- aid: peking:ir-opensearch
+  name: PKU Institutional Repository OpenSearch Feed
+  x-operator: institution
+  description: >-
+    OpenSearch 1.1 query interface returning an Atom feed of repository records, served from the institution's
+    own host. Verified live 2026-08-19 (HTTP 200, 32KB Atom response for query=test).
+  humanURL: https://ir.pku.edu.cn/
+  baseURL: https://ir.pku.edu.cn/open-search/
+  tags:
+  - OpenSearch
+  - Atom
+  - Discovery
+  - Research Repository
+  properties:
+  - type: Website
+    url: https://ir.pku.edu.cn/open-search/?query=test
+- aid: peking:idp-saml
+  name: Peking University Shibboleth Identity Provider (SAML 2.0 metadata)
+  x-operator: institution
+  x-operator-evidence: >-
+    entityID https://idp.pku.edu.cn/idp/shibboleth, shibmd:Scope pku.edu.cn, served from the university's
+    own host; independently listed in eduGAIN with registration authority https://www.carsi.edu.cn since
+    2019-06-18.
+  description: >-
+    The university's federated identity provider, publishing live Shibboleth/SAML 2.0 metadata as machine-readable
+    XML. Declares SAML 2.0 POST, POST-SimpleSign and Redirect SSO/SLO bindings, the legacy Shibboleth
+    SSO profile, an AttributeAuthorityDescriptor, and SOAP ArtifactResolution / AttributeQuery / SLO endpoints
+    on port 8443. This is the surface class universities operate by definition and almost never catalogue.
+  humanURL: https://idp.pku.edu.cn/idp/shibboleth
+  baseURL: https://idp.pku.edu.cn/idp
+  tags:
+  - Identity Federation
+  - SAML
+  - Shibboleth
+  - eduGAIN
+  - Authentication
+  properties:
+  - type: Authentication
+    url: authentication/peking-authentication.yml
+  - type: Examples
+    url: examples/peking-idp-saml-metadata.xml
+  - type: Website
+    url: https://idp.pku.edu.cn/idp/shibboleth
+- aid: peking:carsi
+  name: CARSI — CERNET Authentication and Resource Sharing Infrastructure
+  x-operator: institution
+  x-operator-evidence: >-
+    Operated by the Peking University Computer Center: the carsi.edu.cn footer reads 版权所有©北京大学计算中心, and
+    eduGAIN's federation registry lists CARSI with the contact address carsi@pku.edu.cn, registration
+    authority https://www.carsi.edu.cn, membership from 2019-05-24 and production from 2019-06-18. The
+    federation runs on its own national domain rather than pku.edu.cn, but Peking University runs the
+    federation.
+  description: >-
+    China's national identity federation for higher education and research, operated by Peking University
+    and a full eduGAIN member. 1,042 SAML entities in eduGAIN carry CARSI as their registration authority
+    — identity providers at 500+ Chinese universities and the service providers of international scholarly
+    publishers — which makes this the largest programmable surface Peking University runs and one it runs
+    on behalf of the whole sector. PKU also operates the national eduroam service at eduroam.edu.cn, listed
+    with CARSI as CERNET basic infrastructure since October 2017.
+  humanURL: https://www.carsi.edu.cn/
+  tags:
+  - Identity Federation
+  - SAML
+  - eduGAIN
+  - National Infrastructure
+  - Authentication
+  properties:
+  - type: Website
+    url: https://www.carsi.edu.cn/
+  - type: Authentication
+    url: authentication/peking-authentication.yml
+- aid: peking:openscow
+  name: OpenSCOW / CraneSched research-computing APIs
+  x-operator: institution
+  x-operator-evidence: >-
+    Every source file is copyright "Peking University and Peking University Institute for Computing and
+    Digital Economy", released under Mulan PSL v2 from the PKU HPC group's own GitHub organisation.
+  description: >-
+    OpenSCOW ("Super Computing On Web") is an HPC portal and management system authored at Peking University;
+    CraneSched is its distributed scheduler for HPC and AI workloads. Their APIs are defined in roughly
+    forty Protocol Buffer files across portal, mis, audit, hook and scheduler services and consumed over
+    gRPC, with an OpenAPI document generated at build time for the SCOW AI service. This is a real institution-authored
+    API contract, but it describes software each site deploys itself — the generated document's only server
+    is http://localhost:5006/api — so no hosted base URL is claimed.
+  humanURL: https://pkuhpc.github.io/OpenSCOW/
+  tags:
+  - Research Computing
+  - HPC
+  - gRPC
+  - Protocol Buffers
+  - Open-Source
+  tags_raw:
+  - Research Computing
+  - HPC
+  - gRPC
+  - Protocol Buffers
+  - Open Source
+  properties:
+  - type: GitHubRepository
+    url: https://github.com/PKUHPC/OpenSCOW
+  - type: Documentation
+    url: https://pkuhpc.github.io/OpenSCOW/
+  - type: SourceCode
+    url: https://github.com/PKUHPC/CraneSched
+- aid: peking:opendata-rest
+  name: PKU Open Research Data Platform (Dataverse REST API)
+  x-operator: institution
+  x-operator-evidence: >-
+    Host opendata.pku.edu.cn is under Peking University's own registrable domain and TLS terminates on
+    PKU's own *.pku.edu.cn certificate. The deployment is a PKU-authored customisation of Dataverse —
+    bilingual interface, PKU-specific GroupProvider and credentials authentication, a DataCite DOI registration
+    module — published as source.
+  x-availability: unreachable
+  description: >-
+    Dataverse-based research data repository operated by the PKU Library across social science, health,
+    bioinformatics and NLP collections. Verified live by this catalog on 2026-06-03 (183 dataverses, 485
+    datasets). During the 2026-08-19 pass the host completed TLS and answered a 301 on port 80 but never
+    returned an HTTPS response, across seven attempts; recorded as unreadable from our vantage point rather
+    than removed, since nothing observed proves the surface is gone.
+  humanURL: https://opendata.pku.edu.cn/
+  baseURL: https://opendata.pku.edu.cn/api
+  tags:
+  - Research Data
+  - Open Data
+  - Dataverse
+  - REST
+  - Repository
+  properties:
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/
+  - type: SourceCode
+    url: https://github.com/pengchengluo/Peking-University-Open-Research-Data-Platform
+- aid: peking:opendata-oaipmh
+  name: PKU Open Research Data Platform (OAI-PMH)
+  x-operator: institution
+  x-availability: unreachable
+  description: >-
+    OAI-PMH 2.0 metadata-harvesting endpoint for the Open Research Data Platform, verified responding
+    to the Identify verb on 2026-06-03 with Dublin Core and DataCite support via the XOAI toolkit. Unreachable
+    during the 2026-08-19 pass on the same terms as the platform's REST API above.
+  humanURL: https://opendata.pku.edu.cn/
+  baseURL: https://opendata.pku.edu.cn/oai
+  tags:
+  - OAI-PMH
+  - Metadata
+  - Harvesting
+  - Research Data
+  - Repository
+  properties:
+  - type: Documentation
+    url: https://guides.dataverse.org/en/latest/api/oai.html
+- aid: peking:peking-collections-api
+  name: Peking University Collections API
+  description: Collections of items inside a community.
+  humanURL: https://ir.pku.edu.cn/
+  baseURL: https://ir.pku.edu.cn/rest
+  tags:
+  - Collections
+  properties:
+  - type: OpenAPI
+    url: openapi/peking-collections-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/peking-ir-item.json
+  - type: Examples
+    url: examples/peking-ir-rest-items-response.json
+  - type: Website
+    url: https://ir.pku.edu.cn/
+  - type: Examples
+    url: examples/peking-ir-oai-identify-response.xml
+  - type: Documentation
+    url: https://www.openarchives.org/OAI/openarchivesprotocol.html
+  - type: Conformance
+    url: conformance/peking-conformance.yml
+- aid: peking:peking-communities-api
+  name: Peking University Communities API
+  description: >-
+    Top-level organisational units of the repository (schools, departments, patent and thesis collections).
+  humanURL: https://ir.pku.edu.cn/
+  baseURL: https://ir.pku.edu.cn/rest
+  tags:
+  - Communities
+  properties:
+  - type: OpenAPI
+    url: openapi/peking-communities-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/peking-ir-item.json
+  - type: Examples
+    url: examples/peking-ir-rest-items-response.json
+  - type: Website
+    url: https://ir.pku.edu.cn/
+  - type: Examples
+    url: examples/peking-ir-oai-identify-response.xml
+  - type: Documentation
+    url: https://www.openarchives.org/OAI/openarchivesprotocol.html
+  - type: Conformance
+    url: conformance/peking-conformance.yml
+- aid: peking:peking-harvesting-api
+  name: Peking University Harvesting API
+  description: OAI-PMH 2.0 verbs for harvesting repository metadata.
+  humanURL: https://ir.pku.edu.cn/
+  baseURL: https://ir.pku.edu.cn/rest
+  tags:
+  - Harvesting
+  properties:
+  - type: OpenAPI
+    url: openapi/peking-harvesting-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/peking-ir-item.json
+  - type: Examples
+    url: examples/peking-ir-rest-items-response.json
+  - type: Website
+    url: https://ir.pku.edu.cn/
+  - type: Examples
+    url: examples/peking-ir-oai-identify-response.xml
+  - type: Documentation
+    url: https://www.openarchives.org/OAI/openarchivesprotocol.html
+  - type: Conformance
+    url: conformance/peking-conformance.yml
+- aid: peking:peking-items-api
+  name: Peking University Items API
+  description: >-
+    Individual repository records — articles, theses, patents — and their metadata and bitstreams.
+  humanURL: https://ir.pku.edu.cn/
+  baseURL: https://ir.pku.edu.cn/rest
+  tags:
+  - Items
+  properties:
+  - type: OpenAPI
+    url: openapi/peking-items-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/peking-ir-item.json
+  - type: Examples
+    url: examples/peking-ir-rest-items-response.json
+  - type: Website
+    url: https://ir.pku.edu.cn/
+  - type: Examples
+    url: examples/peking-ir-oai-identify-response.xml
+  - type: Documentation
+    url: https://www.openarchives.org/OAI/openarchivesprotocol.html
+  - type: Conformance
+    url: conformance/peking-conformance.yml
+- aid: peking:peking-status-api
+  name: Peking University Status API
+  description: Service liveness and authentication state.
+  humanURL: https://ir.pku.edu.cn/
+  baseURL: https://ir.pku.edu.cn/rest
+  tags:
+  - Status
+  properties:
+  - type: OpenAPI
+    url: openapi/peking-status-api-openapi.yml
+  - type: JSONSchema
+    url: json-schema/peking-ir-item.json
+  - type: Examples
+    url: examples/peking-ir-rest-items-response.json
+  - type: Website
+    url: https://ir.pku.edu.cn/
+  - type: Examples
+    url: examples/peking-ir-oai-identify-response.xml
+  - type: Documentation
+    url: https://www.openarchives.org/OAI/openarchivesprotocol.html
+  - type: Conformance
+    url: conformance/peking-conformance.yml
 common:
   - type: Website
     url: https://www.pku.edu.cn/
