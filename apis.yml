@@ -394,6 +394,9 @@ apis:
   - type: Conformance
     url: conformance/peking-conformance.yml
 common:
+  - type: CapabilityMap
+    url: capabilities/peking-capability-edges.yml
+    name: Peking University Business Capability Map
   - type: IssueTracker
     url: https://github.com/PKUHPC/OpenSCOW/issues
   - type: Releases
