@@ -25,6 +25,19 @@ description: >-
   registrar — are gated. The footprint is small, real, and almost entirely a by-product of
   scholarly infrastructure rather than a developer programme.
 type: Index
+deliveryModel:
+  model: unknown
+  open_source: unknown
+  commercial: true
+  callable_host: true
+  label: Delivery model not determined — needs a product licence on record
+  confidence: low
+  source:
+  - openapi
+  - pricing
+  - repository-unlicensed
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: free
   onboarding: unknown
@@ -381,6 +394,10 @@ apis:
   - type: Conformance
     url: conformance/peking-conformance.yml
 common:
+  - type: IssueTracker
+    url: https://github.com/PKUHPC/OpenSCOW/issues
+  - type: Releases
+    url: https://github.com/PKUHPC/OpenSCOW/releases
   - type: Website
     url: https://www.pku.edu.cn/
   - type: About
