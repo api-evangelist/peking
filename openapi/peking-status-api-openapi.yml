@@ -1,0 +1,51 @@
+openapi: 3.2.0
+info:
+  title: Peking University Institutional Repository REST Status API
+  description: 'Read-only HTTP/JSON API for the Institutional Repository of Peking University (北京大学机构知识库), operated by the PKU Library at ir.pku.edu.cn on Peking University''s own domain. The deployment runs DSpace repository software, but the service, the host, the handle prefix (20.500.11897) and the record set are the institution''s, and the payloads carry PKU-specific extensions (claim, award4pku, taglist, deptid, deptname) that are not present in stock DSpace — this is an institution-operated deployment, not a hosted vendor tenancy.
+
+    Every path and response shape in this document was captured from live, unauthenticated probes on 2026-08-19. Paths that did not answer are not included.'
+  version: '1.0'
+  contact:
+    name: PKU Institutional Repository
+    email: pkuir@lib.pku.edu.cn
+    url: https://ir.pku.edu.cn/
+  x-operator: institution
+  x-operator-evidence: Host ir.pku.edu.cn is under Peking University's own registrable domain pku.edu.cn; OAI-PMH Identify names the repository "Institutional Repository of Peking University" with adminEmail pkuir@lib.pku.edu.cn.
+  x-generated: '2026-08-19'
+  x-method: probed
+  x-source: https://ir.pku.edu.cn/rest/status
+servers:
+- url: https://ir.pku.edu.cn/rest
+  description: Production repository REST API (no authentication required for read paths)
+tags:
+- name: Status
+  description: Service liveness and authentication state.
+paths:
+  /status:
+    get:
+      tags:
+      - Status
+      summary: Service status
+      description: Returns repository liveness and whether the calling session is authenticated. Verified 200 on 2026-08-19.
+      operationId: getStatus
+      responses:
+        '200':
+          description: Status document
+          content:
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Status'
+              examples:
+                live:
+                  summary: Captured 2026-08-19
+                  externalValue: ../examples/peking-ir-rest-status-response.xml
+components:
+  schemas:
+    Status:
+      type: object
+      description: DSpace status document, served as XML.
+      properties:
+        authenticated:
+          type: boolean
+        okay:
+          type: boolean

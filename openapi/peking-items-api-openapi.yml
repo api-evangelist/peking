@@ -1,0 +1,343 @@
+openapi: 3.2.0
+info:
+  title: Peking University Institutional Repository REST Items API
+  description: 'Read-only HTTP/JSON API for the Institutional Repository of Peking University (北京大学机构知识库), operated by the PKU Library at ir.pku.edu.cn on Peking University''s own domain. The deployment runs DSpace repository software, but the service, the host, the handle prefix (20.500.11897) and the record set are the institution''s, and the payloads carry PKU-specific extensions (claim, award4pku, taglist, deptid, deptname) that are not present in stock DSpace — this is an institution-operated deployment, not a hosted vendor tenancy.
+
+    Every path and response shape in this document was captured from live, unauthenticated probes on 2026-08-19. Paths that did not answer are not included.'
+  version: '1.0'
+  contact:
+    name: PKU Institutional Repository
+    email: pkuir@lib.pku.edu.cn
+    url: https://ir.pku.edu.cn/
+  x-operator: institution
+  x-operator-evidence: Host ir.pku.edu.cn is under Peking University's own registrable domain pku.edu.cn; OAI-PMH Identify names the repository "Institutional Repository of Peking University" with adminEmail pkuir@lib.pku.edu.cn.
+  x-generated: '2026-08-19'
+  x-method: probed
+  x-source: https://ir.pku.edu.cn/rest/status
+servers:
+- url: https://ir.pku.edu.cn/rest
+  description: Production repository REST API (no authentication required for read paths)
+tags:
+- name: Items
+  description: Individual repository records — articles, theses, patents — and their metadata and bitstreams.
+paths:
+  /collections/{collectionId}/items:
+    get:
+      tags:
+      - Items
+      summary: List the items in a collection
+      operationId: listCollectionItems
+      parameters:
+      - name: collectionId
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 138
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+      - $ref: '#/components/parameters/Expand'
+      responses:
+        '200':
+          description: Array of items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Item'
+  /items:
+    get:
+      tags:
+      - Items
+      summary: List items
+      operationId: listItems
+      parameters:
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+      - $ref: '#/components/parameters/Expand'
+      responses:
+        '200':
+          description: Array of items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Item'
+              examples:
+                live:
+                  externalValue: ../examples/peking-ir-rest-items-response.json
+  /items/{itemId}/metadata:
+    get:
+      tags:
+      - Items
+      summary: Get the Dublin Core metadata of an item
+      description: Returns the item's flat Dublin Core key/value/language triples. Verified 200 on 2026-08-19 for item 3.
+      operationId: getItemMetadata
+      parameters:
+      - name: itemId
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 3
+      responses:
+        '200':
+          description: Array of metadata entries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MetadataEntry'
+  /items/{itemId}/bitstreams:
+    get:
+      tags:
+      - Items
+      summary: List the files attached to an item
+      operationId: getItemBitstreams
+      parameters:
+      - name: itemId
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 3
+      responses:
+        '200':
+          description: Array of bitstreams
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Bitstream'
+  /handle/{prefix}/{suffix}:
+    get:
+      tags:
+      - Items
+      summary: Resolve a Handle to the object it identifies
+      description: Resolves a Handle.Net identifier under the repository's own prefix 20.500.11897 to the community, collection or item it names. Verified 200 on 2026-08-19 for handle 20.500.11897/69.
+      operationId: resolveHandle
+      parameters:
+      - name: prefix
+        in: path
+        required: true
+        schema:
+          type: string
+        example: 20.500.11897
+      - name: suffix
+        in: path
+        required: true
+        schema:
+          type: string
+        example: '69'
+      responses:
+        '200':
+          description: The resolved object
+          content:
+            application/json:
+              schema:
+                oneOf:
+                - $ref: '#/components/schemas/Item'
+                - $ref: '#/components/schemas/Collection'
+                - $ref: '#/components/schemas/Community'
+components:
+  parameters:
+    Expand:
+      name: expand
+      in: query
+      required: false
+      description: Comma-separated list of relations to inline. Every response advertises its own legal values in the `expand` array it returns.
+      schema:
+        type: string
+      example: metadata,bitstreams
+    Offset:
+      name: offset
+      in: query
+      required: false
+      description: Number of records to skip.
+      schema:
+        type: integer
+        default: 0
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Maximum number of records to return.
+      schema:
+        type: integer
+        default: 100
+  schemas:
+    Item:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        handle:
+          type: string
+        type:
+          type: string
+          const: item
+        link:
+          type: string
+        expand:
+          type: array
+          items:
+            type: string
+        lastModified:
+          type: string
+          example: '2015-09-25 09:47:29.576'
+        itemID:
+          type: integer
+        claim:
+          type:
+          - string
+          - 'null'
+          description: PKU extension — author claim state for the record.
+        award4pku:
+          type:
+          - string
+          - 'null'
+          description: PKU extension — award/recognition marker.
+        claim_list:
+          type:
+          - array
+          - 'null'
+          items:
+            type: object
+        claim_list_size:
+          type: integer
+        taglist:
+          type:
+          - array
+          - 'null'
+          items:
+            type: object
+          description: PKU extension — local subject tags.
+    Collection:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        handle:
+          type: string
+        type:
+          type: string
+          const: collection
+        link:
+          type: string
+        expand:
+          type: array
+          items:
+            type: string
+        numberItems:
+          type: integer
+        license:
+          type:
+          - string
+          - 'null'
+        copyrightText:
+          type: string
+        introductoryText:
+          type: string
+        shortDescription:
+          type: string
+        sidebarText:
+          type: string
+        deptid:
+          type: string
+          description: PKU extension — the owning department identifier.
+        deptname:
+          type: string
+          description: PKU extension — the owning department name.
+    MetadataEntry:
+      type: object
+      properties:
+        key:
+          type: string
+          example: dc.contributor.author
+        value:
+          type: string
+        language:
+          type:
+          - string
+          - 'null'
+          example: zh_CN
+    Bitstream:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        handle:
+          type:
+          - string
+          - 'null'
+        type:
+          type: string
+          const: bitstream
+        link:
+          type: string
+        expand:
+          type: array
+          items:
+            type: string
+        bundleName:
+          type: string
+          example: ORIGINAL
+        description:
+          type:
+          - string
+          - 'null'
+    Community:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        handle:
+          type: string
+          example: 20.500.11897/413921
+        type:
+          type: string
+          const: community
+        link:
+          type: string
+        expand:
+          type: array
+          items:
+            type: string
+        logo:
+          type:
+          - string
+          - 'null'
+        parentCommunity:
+          type:
+          - object
+          - 'null'
+        copyrightText:
+          type: string
+        introductoryText:
+          type: string
+        shortDescription:
+          type: string
+        sidebarText:
+          type: string
+        countItems:
+          type: integer
+        subcommunities:
+          type: array
+          items:
+            type: object
+        collections:
+          type: array
+          items:
+            type: object

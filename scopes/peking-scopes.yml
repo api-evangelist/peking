@@ -1,0 +1,23 @@
+generated: '2026-08-19'
+method: probed
+source: https://iaaa.pku.edu.cn/iaaa/oauth.jsp
+x-operator: institution
+note: >-
+  No OAuth scope vocabulary is published by Peking University. The IAAA unified
+  authentication service exposes an OAuth authorization page (HTTP 200) but no
+  discovery document — /.well-known/openid-configuration was not served on any PKU
+  host probed on 2026-08-19 — and client registration is an internal, approval-gated
+  process. The federated surface uses SAML attribute release, not OAuth scopes;
+  the attribute authority is declared in the IdP metadata and its released attribute
+  set is negotiated per service provider through CARSI rather than published.
+  Nothing is asserted here that was not observed. This file records an absence.
+schemes: []
+scopes: []
+saml_attribute_release:
+  documented_publicly: false
+  attribute_authority: https://idp.pku.edu.cn:8443/idp/profile/SAML2/SOAP/AttributeQuery
+  scope: pku.edu.cn
+  note: >-
+    The IdP declares an AttributeAuthorityDescriptor and a shibmd:Scope of pku.edu.cn,
+    so attribute release exists and is machine-declared; the released attribute names
+    themselves are not published on a public surface.

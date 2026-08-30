@@ -1,0 +1,119 @@
+generated: '2026-08-19'
+method: probed
+source: https://ir.pku.edu.cn/oai/request?verb=Identify
+x-operator: institution
+note: >-
+  Conformance is recorded only where a live artifact demonstrates it. Peking University
+  is scored under the Kin Score `education` regulatory regime; the standards below are
+  that regime's named conformance targets plus the general web/API standards observed on
+  the institution's own hosts. Reward-only: an unproven standard is recorded as
+  conforms:false with the probe that failed to find it, never left implied.
+standards:
+  - id: oai-pmh
+    conforms: true
+    version: '2.0'
+    evidence: >-
+      https://ir.pku.edu.cn/oai/request?verb=Identify returns HTTP 200 with a valid
+      OAI-PMH 2.0 envelope declaring protocolVersion 2.0, repositoryName "Institutional
+      Repository of Peking University", adminEmail pkuir@lib.pku.edu.cn, earliestDatestamp
+      2015-09-25T01:41:46Z, deletedRecord transient and granularity YYYY-MM-DDThh:mm:ssZ.
+      ListMetadataFormats returns twelve prefixes and ListSets returns PKU faculty sets.
+    location: openapi/peking-institutional-repository-oai-pmh-openapi.yml#/paths/~1request
+    gaps: >-
+      An unrecognised verb returns HTTP 500 rather than the badVerb error element the
+      protocol requires, and GetRecord returned HTTP 500 to a probe. Harvesting verbs
+      that matter (Identify, ListMetadataFormats, ListSets, ListIdentifiers) all work.
+  - id: shibboleth
+    conforms: true
+    evidence: >-
+      https://idp.pku.edu.cn/idp/shibboleth serves live Shibboleth IdP metadata (HTTP 200,
+      14,377 bytes) with entityID https://idp.pku.edu.cn/idp/shibboleth and
+      shibmd:Scope pku.edu.cn.
+    location: authentication/peking-authentication.yml#/schemes/0
+  - id: saml
+    conforms: true
+    version: '2.0'
+    evidence: >-
+      The same metadata document declares SAML 2.0 POST, POST-SimpleSign and Redirect
+      SSO/SLO bindings, an IDPSSODescriptor and an AttributeAuthorityDescriptor.
+      eduGAIN's entity registry independently lists both descriptors for
+      https://idp.pku.edu.cn/idp/shibboleth, registration authority
+      https://www.carsi.edu.cn, first seen 2019-06-18.
+    location: authentication/peking-authentication.yml#/schemes/0
+  - id: dublin-core
+    conforms: true
+    evidence: >-
+      ListMetadataFormats advertises oai_dc and qdc; /rest/items/{id}/metadata returns
+      flat dc.* key/value/language triples.
+    location: json-schema/peking-ir-item.json#/$defs/metadataEntry
+  - id: handle-system
+    conforms: true
+    evidence: >-
+      The repository owns and resolves Handle prefix 20.500.11897;
+      https://ir.pku.edu.cn/rest/handle/20.500.11897/69 returns HTTP 200 and the item it
+      names.
+    location: openapi/peking-institutional-repository-rest-openapi.yml#/paths/~1handle~1{prefix}~1{suffix}
+  - id: opensearch
+    conforms: true
+    evidence: >-
+      https://ir.pku.edu.cn/open-search/?query=test returns HTTP 200 with an Atom feed
+      carrying the opensearch namespace.
+  - id: mets
+    conforms: true
+    evidence: ListMetadataFormats advertises mets, mods, didl, ore, rdf, marc, dim, etdms and uketd_dc.
+  - id: datacite
+    conforms: false
+    evidence: >-
+      No DataCite DOI minting surface was reachable. The published source of the PKU Open
+      Research Data Platform describes a DataCite MDS registration module, but the platform
+      at opendata.pku.edu.cn did not answer any HTTPS request during this pass, so nothing
+      was verified live and no conformance is credited — see x-coverage in apis.yml.
+  - id: orcid
+    conforms: false
+    evidence: >-
+      No ORCID identifiers appeared in the repository metadata probed, and no ORCID
+      integration is documented on a public PKU surface.
+  - id: crossref
+    conforms: false
+    evidence: No Crossref deposit or query surface found on a pku.edu.cn host.
+  - id: scim
+    conforms: false
+    evidence: >-
+      No SCIM endpoint published. Identity provisioning is internal to IAAA; the federated
+      surface is SAML attribute release, not SCIM.
+  - id: lti
+    conforms: false
+    evidence: >-
+      course.pku.edu.cn (教学网, the campus LMS) is behind authentication; no LTI tool
+      configuration or platform registration endpoint is published publicly.
+  - id: oneroster
+    conforms: false
+  - id: ed-fi
+    conforms: false
+  - id: caliper
+    conforms: false
+  - id: qti
+    conforms: false
+  - id: openapi
+    conforms: false
+    evidence: >-
+      Peking University publishes no OpenAPI description of any of its surfaces. The two
+      OpenAPIs in this repo are ours, derived from live probes and marked as such.
+  - id: rfc9457-problem-details
+    conforms: false
+    evidence: >-
+      Errors are returned as Tomcat HTML 500 pages, not application/problem+json.
+  - id: rest
+    conforms: true
+    evidence: https://ir.pku.edu.cn/rest returns JSON resources with hypermedia-style link fields.
+  - id: json-schema
+    conforms: false
+    evidence: No schema is published by the institution; the schemas here are derived.
+notes:
+  - >-
+    OpenSCOW and CraneSched, published by the PKU High-Performance Computing group at
+    github.com/PKUHPC, define their APIs in Protocol Buffers (roughly 40 .proto files
+    across the two repositories) and generate an OpenAPI document at build time for the
+    SCOW AI service. That is an institution-authored API contract, but it describes
+    software a site deploys itself — the shipped document's only server is
+    http://localhost:5006/api — so no hosted surface is claimed for it here.

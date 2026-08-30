@@ -1,0 +1,177 @@
+openapi: 3.2.0
+info:
+  title: Peking University Institutional Repository OAI-PMH Harvesting API
+  description: 'OAI-PMH 2.0 metadata-harvesting endpoint for the Institutional Repository of Peking University, operated by the PKU Library on the university''s own host. The live Identify response names the repository "Institutional Repository of Peking University", gives adminEmail pkuir@lib.pku.edu.cn, an earliest datestamp of 2015-09-25, transient deleted-record support and YYYY-MM-DDThh:mm:ssZ granularity.
+
+    Twelve metadata formats are advertised: oai_dc, qdc, mods, mets, didl, ore, rdf, marc, xoai, dim, etdms and uketd_dc. Sets are exposed per PKU faculty and department (com_20.500.11897_2 北京大学, com_20.500.11897_3 理学部, and so on).
+
+    The six verbs below are the complete OAI-PMH 2.0 protocol. Identify, ListMetadataFormats, ListSets and ListIdentifiers were verified live on 2026-08-19; GetRecord and ListRecords are protocol-mandatory and are documented from the specification, not from a successful probe — see the note in conformance/peking-conformance.yml.'
+  version: '2.0'
+  contact:
+    name: PKU Institutional Repository
+    email: pkuir@lib.pku.edu.cn
+    url: https://ir.pku.edu.cn/
+  x-operator: institution
+  x-operator-evidence: baseURL reported by the endpoint's own Identify response is http://ir.pku.edu.cn/oai/request, under Peking University's registrable domain.
+  x-generated: '2026-08-19'
+  x-method: probed
+  x-source: https://ir.pku.edu.cn/oai/request?verb=Identify
+servers:
+- url: https://ir.pku.edu.cn/oai
+  description: Production OAI-PMH endpoint
+tags:
+- name: Harvesting
+  description: OAI-PMH 2.0 verbs for harvesting repository metadata.
+paths:
+  /request:
+    get:
+      tags:
+      - Harvesting
+      summary: OAI-PMH 2.0 request
+      description: Single-endpoint OAI-PMH interface. The `verb` parameter selects the operation; the remaining parameters are those the chosen verb allows.
+      operationId: oaiRequest
+      parameters:
+      - name: verb
+        in: query
+        required: true
+        description: The OAI-PMH verb to execute.
+        schema:
+          type: string
+          enum:
+          - Identify
+          - ListMetadataFormats
+          - ListSets
+          - ListIdentifiers
+          - ListRecords
+          - GetRecord
+        example: Identify
+      - name: metadataPrefix
+        in: query
+        required: false
+        description: Metadata format to return. Required for ListIdentifiers, ListRecords and GetRecord. Advertised by this repository as one of the twelve prefixes below.
+        schema:
+          type: string
+          enum:
+          - oai_dc
+          - qdc
+          - mods
+          - mets
+          - didl
+          - ore
+          - rdf
+          - marc
+          - xoai
+          - dim
+          - etdms
+          - uketd_dc
+        example: oai_dc
+      - name: identifier
+        in: query
+        required: false
+        description: OAI identifier of a single record. Required for GetRecord.
+        schema:
+          type: string
+        example: oai:localhost:20.500.11897/69
+      - name: set
+        in: query
+        required: false
+        description: Set to restrict a selective harvest to, e.g. a PKU faculty.
+        schema:
+          type: string
+        example: com_20.500.11897_2
+      - name: from
+        in: query
+        required: false
+        description: Lower bound of the datestamp range, YYYY-MM-DDThh:mm:ssZ.
+        schema:
+          type: string
+      - name: until
+        in: query
+        required: false
+        description: Upper bound of the datestamp range, YYYY-MM-DDThh:mm:ssZ.
+        schema:
+          type: string
+      - name: resumptionToken
+        in: query
+        required: false
+        description: Flow-control token returned by a previous incomplete list response.
+        schema:
+          type: string
+      responses:
+        '200':
+          description: An OAI-PMH response envelope. Protocol-level failures are also returned with HTTP 200 and an <error> element carrying an OAI error code.
+          content:
+            text/xml:
+              schema:
+                $ref: '#/components/schemas/OAIPMHResponse'
+              examples:
+                identify:
+                  summary: Identify, captured live 2026-08-19
+                  externalValue: ../examples/peking-ir-oai-identify-response.xml
+                listMetadataFormats:
+                  summary: ListMetadataFormats, captured live 2026-08-19
+                  externalValue: ../examples/peking-ir-oai-listmetadataformats-response.xml
+        '500':
+          description: Observed behaviour, not protocol behaviour. An unrecognised verb returns a Tomcat HTTP 500 page instead of the OAI-PMH `badVerb` error element the specification requires. Recorded in errors/peking-errors.yml.
+          content:
+            text/html:
+              schema:
+                type: string
+components:
+  schemas:
+    OAIError:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - badArgument
+          - badResumptionToken
+          - badVerb
+          - cannotDisseminateFormat
+          - idDoesNotExist
+          - noRecordsMatch
+          - noMetadataFormats
+          - noSetHierarchy
+        message:
+          type: string
+    Identify:
+      type: object
+      properties:
+        repositoryName:
+          type: string
+          example: Institutional Repository of Peking University
+        baseURL:
+          type: string
+          example: http://ir.pku.edu.cn/oai/request
+        protocolVersion:
+          type: string
+          const: '2.0'
+        adminEmail:
+          type: string
+          example: pkuir@lib.pku.edu.cn
+        earliestDatestamp:
+          type: string
+          example: '2015-09-25T01:41:46Z'
+        deletedRecord:
+          type: string
+          example: transient
+        granularity:
+          type: string
+          example: YYYY-MM-DDThh:mm:ssZ
+    OAIPMHResponse:
+      type: object
+      description: Root OAI-PMH element. Carries responseDate, the echoed request, and exactly one of a verb payload or an error element.
+      properties:
+        responseDate:
+          type: string
+          format: date-time
+        request:
+          type: string
+        Identify:
+          $ref: '#/components/schemas/Identify'
+        error:
+          $ref: '#/components/schemas/OAIError'
+externalDocs:
+  description: OAI-PMH 2.0 protocol specification
+  url: https://www.openarchives.org/OAI/openarchivesprotocol.html

@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/peking/main/json-schema/peking-ir-community.json",
+  "title": "PKU Institutional Repository Community",
+  "description": "A top-level community (faculty, department, or content class such as 专利 / patents) in the Institutional Repository of Peking University, as returned by https://ir.pku.edu.cn/rest/communities. Derived from live responses captured 2026-08-19.",
+  "x-generated": "2026-08-19",
+  "x-method": "derived",
+  "x-source": "https://ir.pku.edu.cn/rest/communities?limit=2",
+  "x-operator": "institution",
+  "type": "object",
+  "required": ["id", "name", "handle", "type", "link"],
+  "properties": {
+    "id": { "type": "integer" },
+    "name": { "type": "string", "examples": ["专利", "人文学部"] },
+    "handle": { "type": "string", "pattern": "^20\\.500\\.11897/" },
+    "type": { "const": "community" },
+    "link": { "type": "string" },
+    "expand": { "type": "array", "items": { "type": "string" } },
+    "logo": { "type": ["object", "null"] },
+    "parentCommunity": { "type": ["object", "null"] },
+    "copyrightText": { "type": "string" },
+    "introductoryText": { "type": "string" },
+    "shortDescription": { "type": "string" },
+    "sidebarText": { "type": "string" },
+    "countItems": { "type": "integer" },
+    "subcommunities": { "type": "array", "items": { "type": "object" } },
+    "collections": { "type": "array", "items": { "type": "object" } }
+  }
+}

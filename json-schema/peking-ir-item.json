@@ -1,0 +1,39 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/peking/main/json-schema/peking-ir-item.json",
+  "title": "PKU Institutional Repository Item",
+  "description": "A single record in the Institutional Repository of Peking University, as returned by https://ir.pku.edu.cn/rest/items. Derived from live responses captured 2026-08-19; the claim, award4pku, claim_list, claim_list_size and taglist properties are Peking University extensions to the underlying DSpace model.",
+  "x-generated": "2026-08-19",
+  "x-method": "derived",
+  "x-source": "https://ir.pku.edu.cn/rest/items?limit=1",
+  "x-operator": "institution",
+  "type": "object",
+  "required": ["id", "name", "handle", "type", "link"],
+  "properties": {
+    "id": { "type": "integer" },
+    "name": { "type": "string" },
+    "handle": { "type": "string", "pattern": "^20\\.500\\.11897/", "examples": ["20.500.11897/69"] },
+    "type": { "const": "item" },
+    "link": { "type": "string", "examples": ["/rest/items/3"] },
+    "expand": { "type": "array", "items": { "type": "string" } },
+    "lastModified": { "type": "string", "examples": ["2015-09-25 09:47:29.576"] },
+    "itemID": { "type": "integer" },
+    "claim": { "type": ["string", "null"] },
+    "award4pku": { "type": ["string", "null"] },
+    "claim_list": { "type": ["array", "null"], "items": { "type": "object" } },
+    "claim_list_size": { "type": "integer" },
+    "taglist": { "type": ["array", "null"], "items": { "type": "object" } },
+    "metadata": { "type": ["array", "null"], "items": { "$ref": "#/$defs/metadataEntry" } }
+  },
+  "$defs": {
+    "metadataEntry": {
+      "type": "object",
+      "required": ["key", "value"],
+      "properties": {
+        "key": { "type": "string", "examples": ["dc.contributor.author", "dc.date.accessioned"] },
+        "value": { "type": "string" },
+        "language": { "type": ["string", "null"], "examples": ["zh_CN"] }
+      }
+    }
+  }
+}

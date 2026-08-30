@@ -1,0 +1,76 @@
+generated: '2026-08-19'
+method: probed
+source: https://idp.pku.edu.cn/idp/shibboleth
+docs: https://iaaa.pku.edu.cn/iaaa/
+x-operator: institution
+note: >-
+  Peking University runs its own campus identity infrastructure and its own federated
+  identity provider, and it also operates CARSI — the CERNET Authentication and Resource
+  Sharing Infrastructure — which is China's national research-and-education identity
+  federation and a full eduGAIN member. The federation is the strongest authentication
+  fact in this profile: it is machine-readable, institution-operated, and independently
+  corroborated by eduGAIN's own registry.
+
+  The public repository APIs (ir.pku.edu.cn/rest, ir.pku.edu.cn/oai) require no
+  authentication for read access — /rest/status returns authenticated=false and okay=true
+  to an anonymous caller and every read path probed on 2026-08-19 answered without
+  credentials.
+summary:
+  types: [saml2, shibboleth, cas, oauth2, none]
+  api_key_in: []
+  oauth2_flows: [authorizationCode]
+schemes:
+  - name: PKU Shibboleth Identity Provider
+    type: saml2
+    entity_id: https://idp.pku.edu.cn/idp/shibboleth
+    metadata_url: https://idp.pku.edu.cn/idp/shibboleth
+    scope: pku.edu.cn
+    description: >-
+      SAML 2.0 identity provider for Peking University, published as live Shibboleth
+      metadata (14KB of XML, HTTP 200 on 2026-08-19). Declares SAML 2.0 POST, POST-SimpleSign
+      and Redirect SSO/SLO profiles, the legacy Shibboleth SSO profile, and SOAP
+      ArtifactResolution / AttributeQuery / SLO endpoints on port 8443. Registered in
+      eduGAIN with registration authority https://www.carsi.edu.cn and in production
+      since 2019-06-18.
+    endpoints:
+      - https://idp.pku.edu.cn/idp/profile/SAML2/POST/SSO
+      - https://idp.pku.edu.cn/idp/profile/SAML2/Redirect/SSO
+      - https://idp.pku.edu.cn/idp/profile/SAML2/POST-SimpleSign/SSO
+      - https://idp.pku.edu.cn/idp/profile/Shibboleth/SSO
+      - https://idp.pku.edu.cn:8443/idp/profile/SAML2/SOAP/AttributeQuery
+      - https://idp.pku.edu.cn:8443/idp/profile/SAML2/SOAP/ArtifactResolution
+    sources:
+      - https://idp.pku.edu.cn/idp/shibboleth
+      - https://technical.edugain.org/api.php?action=list_entities
+  - name: CARSI federation
+    type: saml2-federation
+    description: >-
+      Peking University Computer Center operates CARSI, the CERNET Authentication and
+      Resource Sharing Infrastructure — the national identity federation for Chinese
+      higher education. eduGAIN's federation registry lists CARSI with the contact
+      address carsi@pku.edu.cn, registration authority https://www.carsi.edu.cn,
+      eduGAIN membership from 2019-05-24 and production from 2019-06-18. 1,042 SAML
+      entities in eduGAIN carry CARSI as their registration authority, including PKU's
+      own IdP and SP. The carsi.edu.cn site footer reads 版权所有©北京大学计算中心
+      (Copyright, Peking University Computer Center).
+    sources:
+      - https://www.carsi.edu.cn/
+      - https://technical.edugain.org/api.php?action=list_feds
+  - name: PKU IAAA unified authentication
+    type: cas
+    description: >-
+      IAAA is the campus-wide unified authentication service (CAS/SSO) at
+      iaaa.pku.edu.cn. It fronts staff and student services and exposes an OAuth
+      authorization entry point at /iaaa/oauth.jsp (HTTP 200 on 2026-08-19), but client
+      registration, scope documentation and token endpoints are behind an institutional
+      approval process. It is not a public developer API.
+    sources:
+      - https://iaaa.pku.edu.cn/
+      - https://iaaa.pku.edu.cn/iaaa/oauth.jsp
+  - name: Anonymous read
+    type: none
+    description: >-
+      The Institutional Repository REST and OAI-PMH surfaces are open. No API key,
+      token or registration was required for any read path probed on 2026-08-19.
+    sources:
+      - https://ir.pku.edu.cn/rest/status

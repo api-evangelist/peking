@@ -1,0 +1,204 @@
+openapi: 3.2.0
+info:
+  title: Peking University Institutional Repository REST Collections API
+  description: 'Read-only HTTP/JSON API for the Institutional Repository of Peking University (北京大学机构知识库), operated by the PKU Library at ir.pku.edu.cn on Peking University''s own domain. The deployment runs DSpace repository software, but the service, the host, the handle prefix (20.500.11897) and the record set are the institution''s, and the payloads carry PKU-specific extensions (claim, award4pku, taglist, deptid, deptname) that are not present in stock DSpace — this is an institution-operated deployment, not a hosted vendor tenancy.
+
+    Every path and response shape in this document was captured from live, unauthenticated probes on 2026-08-19. Paths that did not answer are not included.'
+  version: '1.0'
+  contact:
+    name: PKU Institutional Repository
+    email: pkuir@lib.pku.edu.cn
+    url: https://ir.pku.edu.cn/
+  x-operator: institution
+  x-operator-evidence: Host ir.pku.edu.cn is under Peking University's own registrable domain pku.edu.cn; OAI-PMH Identify names the repository "Institutional Repository of Peking University" with adminEmail pkuir@lib.pku.edu.cn.
+  x-generated: '2026-08-19'
+  x-method: probed
+  x-source: https://ir.pku.edu.cn/rest/status
+servers:
+- url: https://ir.pku.edu.cn/rest
+  description: Production repository REST API (no authentication required for read paths)
+tags:
+- name: Collections
+  description: Collections of items inside a community.
+paths:
+  /collections:
+    get:
+      tags:
+      - Collections
+      summary: List collections
+      operationId: listCollections
+      parameters:
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+      - $ref: '#/components/parameters/Expand'
+      responses:
+        '200':
+          description: Array of collections
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Collection'
+              examples:
+                live:
+                  externalValue: ../examples/peking-ir-rest-collections-response.json
+  /collections/{collectionId}:
+    get:
+      tags:
+      - Collections
+      summary: Get one collection
+      operationId: getCollection
+      parameters:
+      - name: collectionId
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 138
+      - $ref: '#/components/parameters/Expand'
+      responses:
+        '200':
+          description: Collection
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Collection'
+  /collections/{collectionId}/items:
+    get:
+      tags:
+      - Collections
+      summary: List the items in a collection
+      operationId: listCollectionItems
+      parameters:
+      - name: collectionId
+        in: path
+        required: true
+        schema:
+          type: integer
+        example: 138
+      - $ref: '#/components/parameters/Limit'
+      - $ref: '#/components/parameters/Offset'
+      - $ref: '#/components/parameters/Expand'
+      responses:
+        '200':
+          description: Array of items
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Item'
+components:
+  schemas:
+    Item:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        handle:
+          type: string
+        type:
+          type: string
+          const: item
+        link:
+          type: string
+        expand:
+          type: array
+          items:
+            type: string
+        lastModified:
+          type: string
+          example: '2015-09-25 09:47:29.576'
+        itemID:
+          type: integer
+        claim:
+          type:
+          - string
+          - 'null'
+          description: PKU extension — author claim state for the record.
+        award4pku:
+          type:
+          - string
+          - 'null'
+          description: PKU extension — award/recognition marker.
+        claim_list:
+          type:
+          - array
+          - 'null'
+          items:
+            type: object
+        claim_list_size:
+          type: integer
+        taglist:
+          type:
+          - array
+          - 'null'
+          items:
+            type: object
+          description: PKU extension — local subject tags.
+    Collection:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        handle:
+          type: string
+        type:
+          type: string
+          const: collection
+        link:
+          type: string
+        expand:
+          type: array
+          items:
+            type: string
+        numberItems:
+          type: integer
+        license:
+          type:
+          - string
+          - 'null'
+        copyrightText:
+          type: string
+        introductoryText:
+          type: string
+        shortDescription:
+          type: string
+        sidebarText:
+          type: string
+        deptid:
+          type: string
+          description: PKU extension — the owning department identifier.
+        deptname:
+          type: string
+          description: PKU extension — the owning department name.
+  parameters:
+    Expand:
+      name: expand
+      in: query
+      required: false
+      description: Comma-separated list of relations to inline. Every response advertises its own legal values in the `expand` array it returns.
+      schema:
+        type: string
+      example: metadata,bitstreams
+    Offset:
+      name: offset
+      in: query
+      required: false
+      description: Number of records to skip.
+      schema:
+        type: integer
+        default: 0
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Maximum number of records to return.
+      schema:
+        type: integer
+        default: 100

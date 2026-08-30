@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://raw.githubusercontent.com/api-evangelist/peking/main/json-schema/peking-ir-collection.json",
+  "title": "PKU Institutional Repository Collection",
+  "description": "A collection inside the Institutional Repository of Peking University, as returned by https://ir.pku.edu.cn/rest/collections. Derived from live responses captured 2026-08-19; deptid and deptname are Peking University extensions naming the owning academic department.",
+  "x-generated": "2026-08-19",
+  "x-method": "derived",
+  "x-source": "https://ir.pku.edu.cn/rest/collections?limit=2",
+  "x-operator": "institution",
+  "type": "object",
+  "required": ["id", "name", "handle", "type", "link"],
+  "properties": {
+    "id": { "type": "integer" },
+    "name": { "type": "string" },
+    "handle": { "type": "string", "pattern": "^20\\.500\\.11897/" },
+    "type": { "const": "collection" },
+    "link": { "type": "string" },
+    "expand": { "type": "array", "items": { "type": "string" } },
+    "logo": { "type": ["object", "null"] },
+    "parentCommunity": { "type": ["object", "null"] },
+    "parentCommunityList": { "type": "array", "items": { "type": "object" } },
+    "items": { "type": "array", "items": { "type": "object" } },
+    "license": { "type": ["string", "null"] },
+    "copyrightText": { "type": "string" },
+    "introductoryText": { "type": "string" },
+    "shortDescription": { "type": "string" },
+    "sidebarText": { "type": "string" },
+    "numberItems": { "type": "integer" },
+    "deptid": { "type": "string" },
+    "deptname": { "type": "string" }
+  }
+}
