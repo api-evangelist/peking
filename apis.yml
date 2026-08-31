@@ -287,6 +287,8 @@ apis:
   humanURL: https://ir.pku.edu.cn/
   baseURL: https://ir.pku.edu.cn/rest
   tags:
+  - Collection
+  tags_raw:
   - Collections
   properties:
   - type: OpenAPI
@@ -355,6 +357,8 @@ apis:
   humanURL: https://ir.pku.edu.cn/
   baseURL: https://ir.pku.edu.cn/rest
   tags:
+  - Item
+  tags_raw:
   - Items
   properties:
   - type: OpenAPI
