@@ -1,0 +1,30 @@
+{
+  "provider": "peking",
+  "sources": [
+    "_original/peking-institutional-repository-oai-pmh-openapi.yml",
+    "_original/peking-institutional-repository-rest-openapi.yml"
+  ],
+  "outputs": [
+    "peking-harvesting-api-openapi.yml",
+    "peking-collections-api-openapi.yml",
+    "peking-communities-api-openapi.yml",
+    "peking-items-api-openapi.yml",
+    "peking-status-api-openapi.yml"
+  ],
+  "archived": [],
+  "errors": [],
+  "warnings": [],
+  "notes": [
+    "sourced from openapi/_original/ (2 archived document(s)); previously refined output at the top level was skipped rather than re-split",
+    "peking-institutional-repository-oai-pmh-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "peking-institutional-repository-rest-openapi.yml: upgraded openapi 3.1.0 -> OpenAPI 3.2.0",
+    "apis.yml register: already-registered"
+  ],
+  "skipped": [
+    "peking-collections-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "peking-communities-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "peking-harvesting-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "peking-items-api-openapi.yml: previously refined output, superseded by openapi/_original/",
+    "peking-status-api-openapi.yml: previously refined output, superseded by openapi/_original/"
+  ]
+}

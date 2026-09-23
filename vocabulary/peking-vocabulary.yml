@@ -1,0 +1,77 @@
+generated: '2026-08-19'
+method: derived
+source: https://ir.pku.edu.cn/rest/communities
+x-operator: institution
+note: >-
+  Terms are derived from the live payloads and metadata documents of Peking University's
+  own surfaces, plus the eduGAIN registry entries for the federation PKU operates.
+vocabulary:
+  name: Peking University Programmable Surface Vocabulary
+  description: >-
+    Working vocabulary for the machine-readable surfaces Peking University itself
+    operates — its institutional repository, its identity provider, the national
+    education federation it runs, and the research-computing software its HPC group
+    authors.
+  version: '2026-08-19'
+  terms:
+    - term: Institutional Repository of Peking University (北京大学机构知识库)
+      definition: >-
+        The university's own scholarly record, at ir.pku.edu.cn, run by the PKU Library
+        (pkuir@lib.pku.edu.cn) with content back to 2015-09-25. Organised into communities
+        that mirror the university — 理学部, 人文学部, 专利 (patents, 25,721 items) — and
+        exposed through an unauthenticated REST API, an OAI-PMH 2.0 endpoint and an
+        OpenSearch Atom feed.
+      tags: [Research Repository, Core Surface]
+    - term: Handle prefix 20.500.11897
+      definition: >-
+        The Handle.Net prefix the repository owns and resolves. Every community,
+        collection and item carries a handle under it, and /rest/handle/{prefix}/{suffix}
+        resolves one to its object.
+      tags: [Identifier]
+    - term: IAAA
+      definition: >-
+        Peking University's unified campus authentication service (统一身份认证), a CAS/SSO
+        system at iaaa.pku.edu.cn that fronts staff and student services and exposes an
+        approval-gated OAuth entry point. Not a public developer API.
+      tags: [Identity, Gated]
+    - term: PKU Shibboleth IdP
+      definition: >-
+        The university's SAML 2.0 identity provider, entityID
+        https://idp.pku.edu.cn/idp/shibboleth, scope pku.edu.cn, publishing live
+        Shibboleth metadata and registered in eduGAIN since 2019-06-18.
+      tags: [Identity Federation, Core Surface]
+    - term: CARSI
+      definition: >-
+        CERNET Authentication and Resource Sharing Infrastructure — China's national
+        identity federation for higher education and research, operated by the Peking
+        University Computer Center (版权所有©北京大学计算中心), a full eduGAIN member since
+        2019-05-24, and the registration authority for 1,042 SAML entities in eduGAIN.
+        It lets students at 500+ Chinese universities reach licensed scholarly resources
+        with their campus account instead of a VPN.
+      tags: [Identity Federation, National Infrastructure, Operated by PKU]
+    - term: eduroam China
+      definition: >-
+        The national eduroam roaming service, run by the Peking University eduroam project
+        team (北京大学eduroam项目组) at eduroam.edu.cn, listed alongside CARSI as CERNET
+        basic infrastructure since October 2017.
+      tags: [Identity Federation, National Infrastructure, Operated by PKU]
+    - term: OpenSCOW
+      definition: >-
+        "Super Computing On Web" — an HPC portal and management system authored by Peking
+        University and the Peking University Institute for Computing and Digital Economy,
+        released under Mulan PSL v2 at github.com/PKUHPC/OpenSCOW. Its API is defined in
+        Protocol Buffers across portal, mis, audit and hook services and consumed over
+        gRPC; the SCOW AI service additionally generates an OpenAPI document at build time.
+      tags: [Research Computing, Open Source, Institution-Authored]
+    - term: CraneSched
+      definition: >-
+        A distributed scheduler for HPC and AI workloads from the same PKU HPC group,
+        with its service contract in protos/Crane.proto and a documented plugin and
+        supervisor interface.
+      tags: [Research Computing, Open Source, Institution-Authored]
+    - term: PKU Open Research Data Platform
+      definition: >-
+        A Dataverse-based research data repository at opendata.pku.edu.cn operated by the
+        PKU Library. Verified live with a working OAI-PMH endpoint on 2026-06-03; did not
+        answer any HTTPS request during the 2026-08-19 pass.
+      tags: [Research Data, Unreachable]

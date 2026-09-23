@@ -1,9 +1,7 @@
 openapi: 3.2.0
 info:
   title: Peking University Institutional Repository REST Items API
-  description: 'Read-only HTTP/JSON API for the Institutional Repository of Peking University (北京大学机构知识库), operated by the PKU Library at ir.pku.edu.cn on Peking University''s own domain. The deployment runs DSpace repository software, but the service, the host, the handle prefix (20.500.11897) and the record set are the institution''s, and the payloads carry PKU-specific extensions (claim, award4pku, taglist, deptid, deptname) that are not present in stock DSpace — this is an institution-operated deployment, not a hosted vendor tenancy.
-
-    Every path and response shape in this document was captured from live, unauthenticated probes on 2026-08-19. Paths that did not answer are not included.'
+  description: Read-only HTTP/JSON API for the Institutional Repository of Peking University (北京大学机构知识库), operated by the PKU Library at ir.pku.edu.cn on Peking University's own domain.
   version: '1.0'
   contact:
     name: PKU Institutional Repository
@@ -144,32 +142,103 @@ paths:
                 - $ref: '#/components/schemas/Collection'
                 - $ref: '#/components/schemas/Community'
 components:
-  parameters:
-    Expand:
-      name: expand
-      in: query
-      required: false
-      description: Comma-separated list of relations to inline. Every response advertises its own legal values in the `expand` array it returns.
-      schema:
-        type: string
-      example: metadata,bitstreams
-    Offset:
-      name: offset
-      in: query
-      required: false
-      description: Number of records to skip.
-      schema:
-        type: integer
-        default: 0
-    Limit:
-      name: limit
-      in: query
-      required: false
-      description: Maximum number of records to return.
-      schema:
-        type: integer
-        default: 100
   schemas:
+    Community:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        handle:
+          type: string
+          example: 20.500.11897/413921
+        type:
+          type: string
+          const: community
+        link:
+          type: string
+        expand:
+          type: array
+          items:
+            type: string
+        logo:
+          type:
+          - string
+          - 'null'
+        parentCommunity:
+          type:
+          - object
+          - 'null'
+        copyrightText:
+          type: string
+        introductoryText:
+          type: string
+        shortDescription:
+          type: string
+        sidebarText:
+          type: string
+        countItems:
+          type: integer
+        subcommunities:
+          type: array
+          items:
+            type: object
+        collections:
+          type: array
+          items:
+            type: object
+    MetadataEntry:
+      type: object
+      properties:
+        key:
+          type: string
+          example: dc.contributor.author
+        value:
+          type: string
+        language:
+          type:
+          - string
+          - 'null'
+          example: zh_CN
+    Collection:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        handle:
+          type: string
+        type:
+          type: string
+          const: collection
+        link:
+          type: string
+        expand:
+          type: array
+          items:
+            type: string
+        numberItems:
+          type: integer
+        license:
+          type:
+          - string
+          - 'null'
+        copyrightText:
+          type: string
+        introductoryText:
+          type: string
+        shortDescription:
+          type: string
+        sidebarText:
+          type: string
+        deptid:
+          type: string
+          description: PKU extension — the owning department identifier.
+        deptname:
+          type: string
+          description: PKU extension — the owning department name.
     Item:
       type: object
       properties:
@@ -218,57 +287,6 @@ components:
           items:
             type: object
           description: PKU extension — local subject tags.
-    Collection:
-      type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        handle:
-          type: string
-        type:
-          type: string
-          const: collection
-        link:
-          type: string
-        expand:
-          type: array
-          items:
-            type: string
-        numberItems:
-          type: integer
-        license:
-          type:
-          - string
-          - 'null'
-        copyrightText:
-          type: string
-        introductoryText:
-          type: string
-        shortDescription:
-          type: string
-        sidebarText:
-          type: string
-        deptid:
-          type: string
-          description: PKU extension — the owning department identifier.
-        deptname:
-          type: string
-          description: PKU extension — the owning department name.
-    MetadataEntry:
-      type: object
-      properties:
-        key:
-          type: string
-          example: dc.contributor.author
-        value:
-          type: string
-        language:
-          type:
-          - string
-          - 'null'
-          example: zh_CN
     Bitstream:
       type: object
       properties:
@@ -296,48 +314,28 @@ components:
           type:
           - string
           - 'null'
-    Community:
-      type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        handle:
-          type: string
-          example: 20.500.11897/413921
-        type:
-          type: string
-          const: community
-        link:
-          type: string
-        expand:
-          type: array
-          items:
-            type: string
-        logo:
-          type:
-          - string
-          - 'null'
-        parentCommunity:
-          type:
-          - object
-          - 'null'
-        copyrightText:
-          type: string
-        introductoryText:
-          type: string
-        shortDescription:
-          type: string
-        sidebarText:
-          type: string
-        countItems:
-          type: integer
-        subcommunities:
-          type: array
-          items:
-            type: object
-        collections:
-          type: array
-          items:
-            type: object
+  parameters:
+    Expand:
+      name: expand
+      in: query
+      required: false
+      description: Comma-separated list of relations to inline. Every response advertises its own legal values in the `expand` array it returns.
+      schema:
+        type: string
+      example: metadata,bitstreams
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Maximum number of records to return.
+      schema:
+        type: integer
+        default: 100
+    Offset:
+      name: offset
+      in: query
+      required: false
+      description: Number of records to skip.
+      schema:
+        type: integer
+        default: 0

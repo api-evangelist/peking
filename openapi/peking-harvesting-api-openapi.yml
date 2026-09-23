@@ -1,11 +1,7 @@
 openapi: 3.2.0
 info:
-  title: Peking University Institutional Repository OAI-PMH Harvesting API
-  description: 'OAI-PMH 2.0 metadata-harvesting endpoint for the Institutional Repository of Peking University, operated by the PKU Library on the university''s own host. The live Identify response names the repository "Institutional Repository of Peking University", gives adminEmail pkuir@lib.pku.edu.cn, an earliest datestamp of 2015-09-25, transient deleted-record support and YYYY-MM-DDThh:mm:ssZ granularity.
-
-    Twelve metadata formats are advertised: oai_dc, qdc, mods, mets, didl, ore, rdf, marc, xoai, dim, etdms and uketd_dc. Sets are exposed per PKU faculty and department (com_20.500.11897_2 北京大学, com_20.500.11897_3 理学部, and so on).
-
-    The six verbs below are the complete OAI-PMH 2.0 protocol. Identify, ListMetadataFormats, ListSets and ListIdentifiers were verified live on 2026-08-19; GetRecord and ListRecords are protocol-mandatory and are documented from the specification, not from a successful probe — see the note in conformance/peking-conformance.yml.'
+  title: Peking University Institutional Repository OAI-PMH…
+  description: OAI-PMH 2.0 metadata-harvesting endpoint for the Institutional Repository of Peking University, operated by the PKU Library on the university's own host.
   version: '2.0'
   contact:
     name: PKU Institutional Repository
@@ -135,6 +131,19 @@ components:
           - noSetHierarchy
         message:
           type: string
+    OAIPMHResponse:
+      type: object
+      description: Root OAI-PMH element. Carries responseDate, the echoed request, and exactly one of a verb payload or an error element.
+      properties:
+        responseDate:
+          type: string
+          format: date-time
+        request:
+          type: string
+        Identify:
+          $ref: '#/components/schemas/Identify'
+        error:
+          $ref: '#/components/schemas/OAIError'
     Identify:
       type: object
       properties:
@@ -159,19 +168,6 @@ components:
         granularity:
           type: string
           example: YYYY-MM-DDThh:mm:ssZ
-    OAIPMHResponse:
-      type: object
-      description: Root OAI-PMH element. Carries responseDate, the echoed request, and exactly one of a verb payload or an error element.
-      properties:
-        responseDate:
-          type: string
-          format: date-time
-        request:
-          type: string
-        Identify:
-          $ref: '#/components/schemas/Identify'
-        error:
-          $ref: '#/components/schemas/OAIError'
 externalDocs:
   description: OAI-PMH 2.0 protocol specification
   url: https://www.openarchives.org/OAI/openarchivesprotocol.html

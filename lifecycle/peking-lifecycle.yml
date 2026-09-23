@@ -1,0 +1,42 @@
+generated: '2026-08-19'
+method: probed
+source: https://ir.pku.edu.cn/oai/request?verb=Identify
+x-operator: institution
+note: >-
+  Peking University publishes no versioning policy, deprecation policy, SLA or status page
+  for any of its machine-readable surfaces. What versioning exists is inherited from the
+  protocols themselves — OAI-PMH declares protocolVersion 2.0 in every response, SAML
+  metadata is versioned by validUntil/cacheDuration, and the repository REST API is the
+  unversioned DSpace 5/6-era /rest tree with no version segment in the path. This is
+  normal for a university and is recorded rather than treated as a gap to be filled.
+versioning:
+  scheme: protocol-declared
+  detail: >-
+    OAI-PMH responses carry <protocolVersion>2.0</protocolVersion>. The REST tree at
+    /rest has no version segment and no version header was returned. The SCOW and
+    CraneSched contracts published by github.com/PKUHPC are versioned by git tag and
+    protobuf package, independently of any PKU-hosted deployment.
+  docs: https://www.openarchives.org/OAI/openarchivesprotocol.html
+deprecation:
+  policy_url: null
+  sunset_header: false
+sla:
+  url: null
+status_page: null
+deprecated_operations: []
+availability:
+  - surface: https://ir.pku.edu.cn
+    observed: live
+    detail: All read paths answered on 2026-08-19; /rest/items/{id} 500s.
+  - surface: https://idp.pku.edu.cn/idp/shibboleth
+    observed: live
+    detail: In eduGAIN production since 2019-06-18.
+  - surface: https://opendata.pku.edu.cn
+    observed: unreachable
+    detail: >-
+      TLS completes against PKU's own *.pku.edu.cn certificate and port 80 returns a 301
+      to HTTPS, but no HTTPS response was ever delivered across seven attempts over 40
+      minutes with browser user-agents, HTTP/1.1 and IPv4 forced. Other pku.edu.cn hosts
+      answered normally in the same window, so this is specific to the host, not to us.
+      It returned HTTP 200 to this catalog on 2026-06-03. Treated as unreadable from our
+      vantage point, not as absent.

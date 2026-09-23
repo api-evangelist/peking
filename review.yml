@@ -3,8 +3,63 @@ name: Peking University
 description: Peking University public developer/API footprint review for APIs.json cataloging.
 url: https://raw.githubusercontent.com/api-evangelist/peking/refs/heads/main/review.yml
 created: '2026-06-03'
-modified: '2026-06-03'
+modified: '2026-08-19'
 reviews:
+  - date: '2026-08-19'
+    rating: 3
+    summary: >-
+      Re-profiled under the university pipeline with operator attribution settled before
+      anything was saved. No vendor contract is attributed to Peking University. Three
+      institution-operated machine-readable surfaces were verified live: the Institutional
+      Repository REST API and its OAI-PMH 2.0 endpoint at ir.pku.edu.cn (PKU Library,
+      Handle prefix 20.500.11897, twelve metadata formats), and the university's Shibboleth
+      SAML 2.0 identity provider at idp.pku.edu.cn, in eduGAIN production since 2019-06-18.
+      The largest find is CARSI, China's national research-and-education identity
+      federation, operated by the Peking University Computer Center — corroborated by
+      eduGAIN's own registry (contact carsi@pku.edu.cn) and by the carsi.edu.cn copyright
+      notice — and the registration authority for 1,042 federated entities. The PKU HPC
+      group authors OpenSCOW and CraneSched, whose gRPC/protobuf contracts are genuinely
+      the institution's but describe self-hosted software with no public base URL. Two
+      defects were found and recorded rather than smoothed over: an unrecognised OAI-PMH
+      verb returns HTTP 500 instead of the protocol's badVerb error, and /rest/items/{id}
+      500s while the same item resolves through /rest/handle. The Dataverse-based Open
+      Research Data Platform, verified live in June, never returned an HTTPS response
+      during this pass despite completing TLS on PKU's own certificate; it is marked
+      unreadable, not removed.
+    endpoints:
+      - url: https://ir.pku.edu.cn/oai/request?verb=Identify
+        status: 200
+        note: OAI-PMH 2.0; repositoryName "Institutional Repository of Peking University", adminEmail pkuir@lib.pku.edu.cn.
+      - url: https://ir.pku.edu.cn/oai/request?verb=ListMetadataFormats
+        status: 200
+        note: Twelve prefixes — oai_dc, qdc, mods, mets, didl, ore, rdf, marc, xoai, dim, etdms, uketd_dc.
+      - url: https://ir.pku.edu.cn/rest/collections?limit=2
+        status: 200
+        note: Live JSON with PKU-only fields deptid/deptname — a locally modified DSpace, not a vendor tenancy.
+      - url: https://ir.pku.edu.cn/rest/handle/20.500.11897/69
+        status: 200
+        note: Handle resolution under the repository's own prefix.
+      - url: https://ir.pku.edu.cn/rest/items/3
+        status: 500
+        note: Defect — item-by-id fails while the same item resolves by handle.
+      - url: https://ir.pku.edu.cn/oai/request?verb=BadVerb
+        status: 500
+        note: OAI-PMH protocol violation — should be 200 with an <error code="badVerb"> element.
+      - url: https://idp.pku.edu.cn/idp/shibboleth
+        status: 200
+        note: Live SAML 2.0 metadata, entityID https://idp.pku.edu.cn/idp/shibboleth, scope pku.edu.cn.
+      - url: https://technical.edugain.org/api.php?action=list_feds
+        status: 200
+        note: eduGAIN registry lists CARSI with contact carsi@pku.edu.cn — PKU operates the federation.
+      - url: https://www.carsi.edu.cn/
+        status: 200
+        note: Footer reads 版权所有©北京大学计算中心 (Peking University Computer Center).
+      - url: https://opendata.pku.edu.cn/
+        status: 0
+        note: TLS completes on PKU's own certificate, port 80 301s, no HTTPS response across seven attempts.
+      - url: https://www.pku.edu.cn/llms.txt
+        status: 404
+        note: No agent-facing surface published.
   - date: '2026-06-03'
     rating: 2
     summary: >-
@@ -33,4 +88,3 @@ reviews:
       - url: https://iaaa.pku.edu.cn/
         status: 200
         note: IAAA unified authentication (CAS/SSO); gated, not a public developer API.
----

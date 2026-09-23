@@ -1,0 +1,47 @@
+generated: '2026-08-19'
+method: probed
+source: https://ir.pku.edu.cn/oai/request?verb=BadVerb
+x-operator: institution
+format: html-error-page
+rfc9457: false
+note: >-
+  The institutional repository has no error contract. Protocol-level and application-level
+  failures both surface as Tomcat's default HTML 500 page with no machine-readable body,
+  including in one case where the OAI-PMH 2.0 specification explicitly requires a
+  structured error element. Everything below was observed on 2026-08-19, not inferred.
+envelope:
+  content_type: text/html
+  schema: null
+  example: 'HTTP Status 500 – Internal Server Error (Tomcat default page, ~3.6KB)'
+status_codes:
+  - status: 200
+    meaning: >-
+      Success. Also the correct OAI-PMH status for protocol errors, which should carry an
+      <error code="..."> element — this repository does not do that.
+    retryable: false
+  - status: 500
+    meaning: >-
+      Returned for an unrecognised OAI-PMH verb, for GetRecord, and for /rest/items/{id}.
+    retryable: false
+observed:
+  - request: 'GET https://ir.pku.edu.cn/oai/request?verb=BadVerb'
+    status: 500
+    expected: '200 with <error code="badVerb">, per OAI-PMH 2.0'
+    note: Protocol violation. A conforming harvester cannot distinguish a bad request from an outage.
+  - request: 'GET https://ir.pku.edu.cn/oai/request?verb=GetRecord&metadataPrefix=oai_dc'
+    status: 500
+    expected: '200 with <error code="badArgument">, the identifier argument being absent'
+    note: Same violation on a mandatory verb.
+  - request: 'GET https://ir.pku.edu.cn/rest/items/3'
+    status: 500
+    expected: 200 with the item
+    note: >-
+      A real defect, not a bad request — the same item resolves fine at
+      /rest/handle/20.500.11897/69 and appears in /rest/items?limit=1. Item-by-numeric-id
+      is broken while item-by-handle works.
+  - request: 'GET https://idp.pku.edu.cn/idp/profile/Metadata/SAML'
+    status: 500
+    note: The Shibboleth metadata-generation profile errors; the static metadata at /idp/shibboleth serves fine.
+  - request: 'GET https://idp.pku.edu.cn/idp/status'
+    status: 403
+    note: IdP status endpoint is access-controlled, which is the correct posture.

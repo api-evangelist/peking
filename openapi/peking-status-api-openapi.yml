@@ -1,9 +1,7 @@
 openapi: 3.2.0
 info:
   title: Peking University Institutional Repository REST Status API
-  description: 'Read-only HTTP/JSON API for the Institutional Repository of Peking University (北京大学机构知识库), operated by the PKU Library at ir.pku.edu.cn on Peking University''s own domain. The deployment runs DSpace repository software, but the service, the host, the handle prefix (20.500.11897) and the record set are the institution''s, and the payloads carry PKU-specific extensions (claim, award4pku, taglist, deptid, deptname) that are not present in stock DSpace — this is an institution-operated deployment, not a hosted vendor tenancy.
-
-    Every path and response shape in this document was captured from live, unauthenticated probes on 2026-08-19. Paths that did not answer are not included.'
+  description: Read-only HTTP/JSON API for the Institutional Repository of Peking University (北京大学机构知识库), operated by the PKU Library at ir.pku.edu.cn on Peking University's own domain.
   version: '1.0'
   contact:
     name: PKU Institutional Repository
