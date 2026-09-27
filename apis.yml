@@ -220,13 +220,14 @@ apis:
   - HPC
   - gRPC
   - Protocol Buffers
-  - Open-Source
+  - Open Source
   tags_raw:
   - Research Computing
   - HPC
   - gRPC
   - Protocol Buffers
   - Open Source
+  - Open-Source
   properties:
   - type: GitHubRepository
     url: https://github.com/PKUHPC/OpenSCOW
@@ -312,6 +313,8 @@ apis:
   humanURL: https://ir.pku.edu.cn/
   baseURL: https://ir.pku.edu.cn/rest
   tags:
+  - Community
+  tags_raw:
   - Communities
   properties:
   - type: OpenAPI

@@ -131,19 +131,6 @@ components:
           - noSetHierarchy
         message:
           type: string
-    OAIPMHResponse:
-      type: object
-      description: Root OAI-PMH element. Carries responseDate, the echoed request, and exactly one of a verb payload or an error element.
-      properties:
-        responseDate:
-          type: string
-          format: date-time
-        request:
-          type: string
-        Identify:
-          $ref: '#/components/schemas/Identify'
-        error:
-          $ref: '#/components/schemas/OAIError'
     Identify:
       type: object
       properties:
@@ -168,6 +155,19 @@ components:
         granularity:
           type: string
           example: YYYY-MM-DDThh:mm:ssZ
+    OAIPMHResponse:
+      type: object
+      description: Root OAI-PMH element. Carries responseDate, the echoed request, and exactly one of a verb payload or an error element.
+      properties:
+        responseDate:
+          type: string
+          format: date-time
+        request:
+          type: string
+        Identify:
+          $ref: '#/components/schemas/Identify'
+        error:
+          $ref: '#/components/schemas/OAIError'
 externalDocs:
   description: OAI-PMH 2.0 protocol specification
   url: https://www.openarchives.org/OAI/openarchivesprotocol.html

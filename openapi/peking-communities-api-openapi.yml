@@ -64,14 +64,6 @@ paths:
                 $ref: '#/components/schemas/Community'
 components:
   parameters:
-    Expand:
-      name: expand
-      in: query
-      required: false
-      description: Comma-separated list of relations to inline. Every response advertises its own legal values in the `expand` array it returns.
-      schema:
-        type: string
-      example: metadata,bitstreams
     Limit:
       name: limit
       in: query
@@ -80,6 +72,14 @@ components:
       schema:
         type: integer
         default: 100
+    Expand:
+      name: expand
+      in: query
+      required: false
+      description: Comma-separated list of relations to inline. Every response advertises its own legal values in the `expand` array it returns.
+      schema:
+        type: string
+      example: metadata,bitstreams
     Offset:
       name: offset
       in: query

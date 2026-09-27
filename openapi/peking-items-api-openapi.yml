@@ -142,6 +142,31 @@ paths:
                 - $ref: '#/components/schemas/Collection'
                 - $ref: '#/components/schemas/Community'
 components:
+  parameters:
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Maximum number of records to return.
+      schema:
+        type: integer
+        default: 100
+    Expand:
+      name: expand
+      in: query
+      required: false
+      description: Comma-separated list of relations to inline. Every response advertises its own legal values in the `expand` array it returns.
+      schema:
+        type: string
+      example: metadata,bitstreams
+    Offset:
+      name: offset
+      in: query
+      required: false
+      description: Number of records to skip.
+      schema:
+        type: integer
+        default: 0
   schemas:
     Community:
       type: object
@@ -188,20 +213,7 @@ components:
           type: array
           items:
             type: object
-    MetadataEntry:
-      type: object
-      properties:
-        key:
-          type: string
-          example: dc.contributor.author
-        value:
-          type: string
-        language:
-          type:
-          - string
-          - 'null'
-          example: zh_CN
-    Collection:
+    Bitstream:
       type: object
       properties:
         id:
@@ -209,36 +221,25 @@ components:
         name:
           type: string
         handle:
-          type: string
+          type:
+          - string
+          - 'null'
         type:
           type: string
-          const: collection
+          const: bitstream
         link:
           type: string
         expand:
           type: array
           items:
             type: string
-        numberItems:
-          type: integer
-        license:
+        bundleName:
+          type: string
+          example: ORIGINAL
+        description:
           type:
           - string
           - 'null'
-        copyrightText:
-          type: string
-        introductoryText:
-          type: string
-        shortDescription:
-          type: string
-        sidebarText:
-          type: string
-        deptid:
-          type: string
-          description: PKU extension — the owning department identifier.
-        deptname:
-          type: string
-          description: PKU extension — the owning department name.
     Item:
       type: object
       properties:
@@ -287,7 +288,7 @@ components:
           items:
             type: object
           description: PKU extension — local subject tags.
-    Bitstream:
+    Collection:
       type: object
       properties:
         id:
@@ -295,47 +296,46 @@ components:
         name:
           type: string
         handle:
-          type:
-          - string
-          - 'null'
+          type: string
         type:
           type: string
-          const: bitstream
+          const: collection
         link:
           type: string
         expand:
           type: array
           items:
             type: string
-        bundleName:
-          type: string
-          example: ORIGINAL
-        description:
+        numberItems:
+          type: integer
+        license:
           type:
           - string
           - 'null'
-  parameters:
-    Expand:
-      name: expand
-      in: query
-      required: false
-      description: Comma-separated list of relations to inline. Every response advertises its own legal values in the `expand` array it returns.
-      schema:
-        type: string
-      example: metadata,bitstreams
-    Limit:
-      name: limit
-      in: query
-      required: false
-      description: Maximum number of records to return.
-      schema:
-        type: integer
-        default: 100
-    Offset:
-      name: offset
-      in: query
-      required: false
-      description: Number of records to skip.
-      schema:
-        type: integer
-        default: 0
+        copyrightText:
+          type: string
+        introductoryText:
+          type: string
+        shortDescription:
+          type: string
+        sidebarText:
+          type: string
+        deptid:
+          type: string
+          description: PKU extension — the owning department identifier.
+        deptname:
+          type: string
+          description: PKU extension — the owning department name.
+    MetadataEntry:
+      type: object
+      properties:
+        key:
+          type: string
+          example: dc.contributor.author
+        value:
+          type: string
+        language:
+          type:
+          - string
+          - 'null'
+          example: zh_CN
