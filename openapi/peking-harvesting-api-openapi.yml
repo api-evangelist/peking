@@ -115,22 +115,6 @@ paths:
                 type: string
 components:
   schemas:
-    OAIError:
-      type: object
-      properties:
-        code:
-          type: string
-          enum:
-          - badArgument
-          - badResumptionToken
-          - badVerb
-          - cannotDisseminateFormat
-          - idDoesNotExist
-          - noRecordsMatch
-          - noMetadataFormats
-          - noSetHierarchy
-        message:
-          type: string
     Identify:
       type: object
       properties:
@@ -155,6 +139,22 @@ components:
         granularity:
           type: string
           example: YYYY-MM-DDThh:mm:ssZ
+    OAIError:
+      type: object
+      properties:
+        code:
+          type: string
+          enum:
+          - badArgument
+          - badResumptionToken
+          - badVerb
+          - cannotDisseminateFormat
+          - idDoesNotExist
+          - noRecordsMatch
+          - noMetadataFormats
+          - noSetHierarchy
+        message:
+          type: string
     OAIPMHResponse:
       type: object
       description: Root OAI-PMH element. Carries responseDate, the echoed request, and exactly one of a verb payload or an error element.

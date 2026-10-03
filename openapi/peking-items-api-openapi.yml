@@ -143,14 +143,6 @@ paths:
                 - $ref: '#/components/schemas/Community'
 components:
   parameters:
-    Limit:
-      name: limit
-      in: query
-      required: false
-      description: Maximum number of records to return.
-      schema:
-        type: integer
-        default: 100
     Expand:
       name: expand
       in: query
@@ -167,79 +159,15 @@ components:
       schema:
         type: integer
         default: 0
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Maximum number of records to return.
+      schema:
+        type: integer
+        default: 100
   schemas:
-    Community:
-      type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        handle:
-          type: string
-          example: 20.500.11897/413921
-        type:
-          type: string
-          const: community
-        link:
-          type: string
-        expand:
-          type: array
-          items:
-            type: string
-        logo:
-          type:
-          - string
-          - 'null'
-        parentCommunity:
-          type:
-          - object
-          - 'null'
-        copyrightText:
-          type: string
-        introductoryText:
-          type: string
-        shortDescription:
-          type: string
-        sidebarText:
-          type: string
-        countItems:
-          type: integer
-        subcommunities:
-          type: array
-          items:
-            type: object
-        collections:
-          type: array
-          items:
-            type: object
-    Bitstream:
-      type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-        handle:
-          type:
-          - string
-          - 'null'
-        type:
-          type: string
-          const: bitstream
-        link:
-          type: string
-        expand:
-          type: array
-          items:
-            type: string
-        bundleName:
-          type: string
-          example: ORIGINAL
-        description:
-          type:
-          - string
-          - 'null'
     Item:
       type: object
       properties:
@@ -288,6 +216,51 @@ components:
           items:
             type: object
           description: PKU extension — local subject tags.
+    Community:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        handle:
+          type: string
+          example: 20.500.11897/413921
+        type:
+          type: string
+          const: community
+        link:
+          type: string
+        expand:
+          type: array
+          items:
+            type: string
+        logo:
+          type:
+          - string
+          - 'null'
+        parentCommunity:
+          type:
+          - object
+          - 'null'
+        copyrightText:
+          type: string
+        introductoryText:
+          type: string
+        shortDescription:
+          type: string
+        sidebarText:
+          type: string
+        countItems:
+          type: integer
+        subcommunities:
+          type: array
+          items:
+            type: object
+        collections:
+          type: array
+          items:
+            type: object
     Collection:
       type: object
       properties:
@@ -339,3 +312,30 @@ components:
           - string
           - 'null'
           example: zh_CN
+    Bitstream:
+      type: object
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        handle:
+          type:
+          - string
+          - 'null'
+        type:
+          type: string
+          const: bitstream
+        link:
+          type: string
+        expand:
+          type: array
+          items:
+            type: string
+        bundleName:
+          type: string
+          example: ORIGINAL
+        description:
+          type:
+          - string
+          - 'null'
