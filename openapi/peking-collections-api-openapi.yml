@@ -88,6 +88,31 @@ paths:
                 items:
                   $ref: '#/components/schemas/Item'
 components:
+  parameters:
+    Offset:
+      name: offset
+      in: query
+      required: false
+      description: Number of records to skip.
+      schema:
+        type: integer
+        default: 0
+    Limit:
+      name: limit
+      in: query
+      required: false
+      description: Maximum number of records to return.
+      schema:
+        type: integer
+        default: 100
+    Expand:
+      name: expand
+      in: query
+      required: false
+      description: Comma-separated list of relations to inline. Every response advertises its own legal values in the `expand` array it returns.
+      schema:
+        type: string
+      example: metadata,bitstreams
   schemas:
     Item:
       type: object
@@ -175,28 +200,3 @@ components:
         deptname:
           type: string
           description: PKU extension — the owning department name.
-  parameters:
-    Expand:
-      name: expand
-      in: query
-      required: false
-      description: Comma-separated list of relations to inline. Every response advertises its own legal values in the `expand` array it returns.
-      schema:
-        type: string
-      example: metadata,bitstreams
-    Offset:
-      name: offset
-      in: query
-      required: false
-      description: Number of records to skip.
-      schema:
-        type: integer
-        default: 0
-    Limit:
-      name: limit
-      in: query
-      required: false
-      description: Maximum number of records to return.
-      schema:
-        type: integer
-        default: 100

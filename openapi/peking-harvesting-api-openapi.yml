@@ -115,30 +115,6 @@ paths:
                 type: string
 components:
   schemas:
-    Identify:
-      type: object
-      properties:
-        repositoryName:
-          type: string
-          example: Institutional Repository of Peking University
-        baseURL:
-          type: string
-          example: http://ir.pku.edu.cn/oai/request
-        protocolVersion:
-          type: string
-          const: '2.0'
-        adminEmail:
-          type: string
-          example: pkuir@lib.pku.edu.cn
-        earliestDatestamp:
-          type: string
-          example: '2015-09-25T01:41:46Z'
-        deletedRecord:
-          type: string
-          example: transient
-        granularity:
-          type: string
-          example: YYYY-MM-DDThh:mm:ssZ
     OAIError:
       type: object
       properties:
@@ -168,6 +144,30 @@ components:
           $ref: '#/components/schemas/Identify'
         error:
           $ref: '#/components/schemas/OAIError'
+    Identify:
+      type: object
+      properties:
+        repositoryName:
+          type: string
+          example: Institutional Repository of Peking University
+        baseURL:
+          type: string
+          example: http://ir.pku.edu.cn/oai/request
+        protocolVersion:
+          type: string
+          const: '2.0'
+        adminEmail:
+          type: string
+          example: pkuir@lib.pku.edu.cn
+        earliestDatestamp:
+          type: string
+          example: '2015-09-25T01:41:46Z'
+        deletedRecord:
+          type: string
+          example: transient
+        granularity:
+          type: string
+          example: YYYY-MM-DDThh:mm:ssZ
 externalDocs:
   description: OAI-PMH 2.0 protocol specification
   url: https://www.openarchives.org/OAI/openarchivesprotocol.html
